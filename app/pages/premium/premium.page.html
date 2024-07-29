@@ -1,0 +1,74 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      프리미엄 조인
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="help()">
+        <ion-icon name="help-circle" mode="ios"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list mode="ios">
+    <div class="pnl-premium-guide" (click)="showGuide()">
+      <div class="lbl-premium-guide">프리미엄 조인은 어떤 서비스 인가요?</div>
+      <ion-icon src="../../../assets/images/img_characters.svg"></ion-icon>
+    </div>
+    <ng-container *ngFor="let list of lists">
+      <ion-item lines="full" mode="md" [routerLink]="['/premium/view', list.id]" routerDirection="forward">
+        <ion-label>
+          <p>{{list.golf_type | filters : 'golf_type'}}</p>
+          <ion-badge mode="md" color="danger" *ngIf="!list.deleted_at && (list.created_at | betweenday: 'dayCount') < 4">New</ion-badge>
+        </ion-label>
+        <ion-label>
+          <strong>
+            {{(list.golf_club_code | filters : 'golf_code') ? (list.golf_club_code | filters : 'golf_code') + ' /' :''}}
+            {{list.golf_club_name}}
+          </strong>
+          <p>
+            <ng-container *ngIf="list.golf_type==1 || list.golf_type==0 || list.golf_type==4">
+              {{list.golf_time | date:'M.dd(E) H:mm':'+0900':'ko-KR'}}
+            </ng-container>
+            <ng-container *ngIf="list.golf_type && (list.golf_type==2 || list.golf_type==3)">
+              {{list.golf_time | date:'M.dd(E)':'+0900':'ko-KR'}}~{{list.golf_next_time | date:'M.dd(E)':'+0900':'ko-KR'}}
+            </ng-container>
+          </p>
+        </ion-label>
+        <ion-label class="ion-text-right ion-text-wrap">
+          <p>{{list.filter_sex | filters : 'golf_gender'}} {{list.golf_partner}}명</p>
+          <div *ngIf="!list.deleted_at; then blank; else end"></div>
+          <ng-template #blank><p> &nbsp; </p></ng-template>
+          <ng-template #end><p><ion-badge color="medium" mode="ios">종료</ion-badge></p></ng-template>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer mode="ios" class="ion-no-border">
+  <ion-toolbar class="ion-no-padding">
+    <ion-button class="ion-no-margin" (click)="create()" expand="block" fill="outline" strong>
+      프리미엄 조인 만들기
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

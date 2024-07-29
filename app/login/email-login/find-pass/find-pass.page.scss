@@ -1,0 +1,12 @@
+ion-item {
+  --padding-end: 16px;
+  --min-height: 80px;
+}
+
+.label-stacked {
+	font-size: 21px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid rgba(var(--ion-color-medium-rgb), 0.5);
+}

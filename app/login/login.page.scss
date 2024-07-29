@@ -1,0 +1,98 @@
+ion-content {
+  --padding-top: constant(safe-area-inset-top);
+  --padding-top: env(safe-area-inset-top);
+  --background: var(--ion-color-primary);
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.background-wrap {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .background {
+    display: inline-block;
+    width: 256px;
+    height: 328px;
+    background: url("../../assets/images/img_login.png");
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+}
+
+.login-wrap {
+  ion-button {
+    position: relative;
+    height: 44px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 12px;
+    margin-left: 40px;
+    margin-right: 40px;
+    --box-shadow: none;
+    ion-icon {
+      position: absolute;
+      left: 7px;
+    }
+    span {
+      margin-left: 22px;
+    }
+    &.naver {
+      --background: #03c75a;
+      margin-bottom: 60px;
+    }
+    &.kakao {
+      --background: #fee500;
+      --color: var(--ion-color-dark);
+    }
+    &.facebook {
+      --background: #1c6bb4;
+    }
+    &.teeshot {
+      --background: rgba(0, 0, 0, 0.29);
+      margin-bottom: 30px;
+    }
+    &.email {
+      --background: var(--ion-color-medium);
+    }
+    &.apple {
+      text-transform: none;
+      --background: var(--ion-color-dark);
+      --color: var(--ion-color-white);
+    }
+    &.phone {
+      --background: rgba(255, 255, 255, 1);
+      --color: var(--ion-color-dark);
+      margin-bottom: 30px;
+    }
+  }
+}
+
+.btn-user-login {
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  padding: 0 10px;
+  margin-bottom: constant(safe-area-inset-bottom);
+  margin-bottom: env(safe-area-inset-bottom);
+  ion-button {
+    font-size: 1em;
+    --background: rgba(var(--ion-color-dark-rgb), 0.25);
+    --color: #fff;
+  }
+}
+
+.login-text {
+  height: 19px;
+  margin: 0 56px 7px 57px;
+  font-size: 13px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+}

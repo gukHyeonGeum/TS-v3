@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-segment mode="md" [(ngModel)]="segment" (ionChange)="segmentChanged($event)" scrollable="true">
+    <ion-segment-button value='0'>
+      <ion-label>
+        <ion-avatar>
+          <img src="assets/emoji/teetalk/animation/2/new-teetalk-animation.png">
+        </ion-avatar>
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value='1'>
+      <ion-label>
+        <ion-avatar>
+          <img src="assets/emoji/teetalk/animation/1/teetalk-animation.png">
+        </ion-avatar>
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value='2'>
+      <ion-label>
+        <ion-avatar>
+          <img src="assets/emoji/teetalk/teetalk.png">
+        </ion-avatar>
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value='3'>
+      <ion-label>
+        <ion-avatar>
+          <img src="assets/icon/giphy-circle.png">
+        </ion-avatar>
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value='4'>
+      <ion-label>
+        <ion-avatar>
+          <img src="assets/emoji/1.png">
+        </ion-avatar>
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content [ngClass]="{'giphy-tab': segment==3}">
+
+  <ion-slides pager="false" [options]="slideOpts" (ionSlideWillChange)="change()">
+    <ion-slide>
+      <ion-list [ngClass]="{'show': segment==0, 'hide': segment!=0}">
+        <ion-grid fixed>
+          <ion-row>
+            <ng-container *ngFor="let teetalkAni of teetalkAnis[1]">
+              <ion-col size="3"><img src="{{teetalkAni.thumb}}" (click)="setValue(teetalkAni.original)" /></ion-col>
+            </ng-container>
+          </ion-row>
+        </ion-grid>    
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      <ion-list [ngClass]="{'show': segment==1, 'hide': segment!=1}">
+        <ion-grid fixed>
+          <ion-row>
+            <ng-container *ngFor="let teetalkAni of teetalkAnis[0]">
+              <ion-col size="3"><img src="{{teetalkAni.thumb}}" (click)="setValue(teetalkAni.original)" /></ion-col>
+            </ng-container>
+          </ion-row>
+        </ion-grid>    
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      <ion-list [ngClass]="{'show': segment==2, 'hide': segment!=2}">
+        <ion-grid fixed>
+          <ion-row>
+            <ng-container *ngFor="let teetalk of teetalks">
+              <ion-col size="3"><img src="{{teetalk}}" (click)="setValue(teetalk)" /></ion-col>
+            </ng-container>
+          </ion-row>
+        </ion-grid>    
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      <ion-list [ngClass]="{'show': segment==3, 'hide': segment!=3}" *ngIf="giphys.length">
+        <div class="pins">
+          <ng-container *ngFor="let giphy of giphys">
+            <li class="pin">
+              <img src="{{giphy.images?.fixed_width_downsampled.url}}" (click)="setValue(giphy.images?.downsized.url)" />
+              <div class="wordmark"><img src="assets/icon/giphy-transparent.png" /></div>
+            </li>
+          </ng-container>
+        </div>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      <ion-list [ngClass]="{'show': segment==4, 'hide': segment!=4}">
+        <ion-grid fixed>
+          <ion-row>
+            <ng-container *ngFor="let smile of smiles">
+              <ion-col size="3" class="emoji-smile"><img src="{{smile}}" (click)="setValue(smile)" /></ion-col>
+            </ng-container>
+          </ion-row>
+        </ion-grid>    
+      </ion-list>
+    </ion-slide>
+    
+  </ion-slides>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light" [ngClass]="{'giphy-category': segment==3}">
+      <ion-segment mode="md" [(ngModel)]="giphyCategory" (ionChange)="categoryChanged($event)" scrollable="true">
+        <ng-container *ngFor="let item of titleArr; let i = index">
+          <ion-segment-button value="{{i}}">
+            {{ item }}
+          </ion-segment-button>
+        </ng-container>
+      </ion-segment>
+  </ion-toolbar>
+</ion-footer>

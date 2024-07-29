@@ -1,0 +1,124 @@
+ion-list {
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+ion-label {
+  p {
+    margin: 6px 0;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+  h2 {
+    margin: 6px 0;
+  }
+}
+
+ion-footer {
+  ion-toolbar {
+    --border-color: rgba(var(--ion-color-medium-rgb), 0.3);
+  }
+  ion-buttons {
+    ion-button {
+      height: 40px;
+      --border-radius: 4px;
+      --border-width: 1px;
+    }
+  }
+}
+
+ion-segment-button {
+  --color-checked: var(--ion-color-white);
+  --indicator-color: var(--ion-color-primary);
+}
+
+.option-text {
+  --min-height: 31px;
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ion-color-danger);
+  }
+  ion-label {
+    margin: 0;
+  }
+}
+
+.date-bar {
+  text-align: center;
+  margin-left: 16px;
+}
+
+.label-stacked {
+  p {
+    font-size: 18px;
+  }
+}
+
+.btn-golfCreate {
+  position: absolute;
+  top: 9px;
+}
+.btn-help {
+  position: absolute;
+  top: 7px;
+}
+
+.guide-help {
+	position: absolute;
+    bottom: 0;
+    right: 60px;
+    padding: 0 16px;
+    font-size: 14px;
+    background-color: rgba(35,35,35,1);
+    border-radius: 8px;
+    color: #fff !important;
+	z-index: 20;
+}
+
+.guide-arrow {
+	&.help-arrow {
+		width: 10px;
+		height: 20px;
+	    bottom: 12px;
+	    right: -9px;
+		&:after {
+			left: -7px;
+	   		top: 3px;
+		}
+	}
+	display: block;
+    position: absolute;
+    width: 20px;
+    height: 10px;
+    overflow: hidden;
+    bottom: -24px;
+    right: 90px;
+    &:after {
+    	left: 3px;
+	    top: -7px;
+	    border-radius: 3px;
+	    position: absolute;
+	    width: 14px;
+	    height: 14px;
+	    -webkit-transform: rotate(45deg);
+	    transform: rotate(45deg);
+	    background: rgba(35,35,35,1);
+	    content: "";
+	    z-index: 10;
+    }
+}
+.top-notice {
+  margin: 10px 0;
+  text-align: center;
+  font-size: 12px;
+  color: #808080;
+}
+.footer-notice {
+  margin: 10px 0;
+  text-align: center;
+  letter-spacing: -1px;
+  font-size: 12px;
+  color: #ff0000
+}

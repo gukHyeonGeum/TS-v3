@@ -1,0 +1,56 @@
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+	<ion-list mode="ios">
+    <div class="container">
+      <ng-container *ngFor="let list of lists; let i = index">
+        <div class="pnl-item">
+          <ion-avatar (click)="profile(list.user_id)">
+            <ion-img [src]="list.thumbnail_image.replace('thumb','medium') | common: {type: 'profileChange'}" (ionError)="imgError($event)"></ion-img>
+          </ion-avatar>
+          <ion-label (click)="profile(list.user_id)">{{ list.username }}</ion-label>
+          <div class="lbl-users-location">
+            <ion-icon src="../../../../../assets/icon/icon-location-list.svg"></ion-icon>
+            <div>{{ list.geo_location }}</div>
+          </div>
+          <div class="btn-request-friendship {{'type' + list.is_friend}}" (click)="requestFriendship(i, list.is_friend)">
+            <div class="{{'type' + list.is_friend}}">
+              {{
+                list.is_friend == 1 ? '대기중' :
+                (list.is_friend == 2 ? '친구수락' :
+                (list.is_friend == 3 ? '새친구' : '친구요청'))
+              }}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ion-list>
+
+  <div class="pnl-spinner" *ngIf="!lists">
+    <div class="lbl-spinner-line-1">AI 친구추천</div>
+    <div class="lbl-spinner-line-2">오늘의 추천 회원을 검색중 입니다.</div>
+    <img src="assets/images/teeshot_loading.gif">
+  </div>
+  
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <div #lblBottomGuide class="lbl-bottom-guide">
+    <div class="lbl-bottom-guide-1">
+      오늘의 추천에서는 AI알고리즘을 통해<br>매일 20명의 새로운 회원을 추천해 드립니다.
+    </div>
+    <br>
+    <div class="lbl-bottom-guide-2">
+      더 많은 회원을 만나보고 싶다면<br>회원검색 기능을 이용해 보세요.
+    </div>
+  </div>
+
+</ion-content>

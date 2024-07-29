@@ -1,0 +1,142 @@
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start" *ngIf="me">
+      <ion-back-button defaultHref="/profile" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="me">프로필 관리</ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content color="light">
+
+  <div *ngIf="me">
+    <ion-list mode="ios">
+      <div class="thumnails ion-padding">
+        <div class="list-thumbnail">
+          <div class="img-thumb" *ngFor="let pic of me.pictures; let i = index">
+            <ion-img [src]="imageUrl + '/' + pic.id + '/medium/' + pic.image_file_name" (click)="imageView(me.id, i)"></ion-img>
+            <div class="typical" *ngIf="me.profile.thumbnail_image == imageUrl + '/' + pic.id + '/thumb/' + pic.image_file_name"><ion-icon name="checkmark-circle" mode="ios" color="primary"></ion-icon></div>
+          </div>
+          <div class="img-thumb img-thumb-none" *ngFor="let img of images">
+            <ion-img [src]="img"></ion-img>
+          </div>
+        </div>
+      </div>
+      <div class="ion-padding-start ion-padding-end ion-padding-bottom">
+        <ion-button expand="block" color="primary" fill="outline" strong (click)="attach()">사진 추가</ion-button>
+      </div>
+    </ion-list>
+    <ion-list class="ion-margin-bottom" mode="ios">
+      <ion-item class="subject-line" lines="none" mode="md" detail (click)="myInfo()">
+        <ion-label>
+          <strong>기본정보</strong>
+        </ion-label>
+      </ion-item>
+
+      <ion-item lines="full" mode="md" detail (click)="selectDistrict(me.profile.district_id)">
+        <ion-label>활동 지역</ion-label>
+        {{districtType == 0 ? '내 위치 사용' : me.profile.geo_location}}
+      </ion-item>
+      
+      <ion-item lines="full" mode="md" detail (click)="nickChange()">
+        <ion-label>닉네임</ion-label>
+        {{ me.username }}
+      </ion-item>
+    </ion-list>
+
+    <ion-list mode="ios" class="ion-margin-bottom">
+      <ion-item class="subject-line" lines="none" mode="md">
+        <ion-label>
+          <strong>골프정보</strong>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item lines="inset" mode="md" [ngClass]="{ 'non-value': me.profile.golf_score==0 }">
+        <ion-label>평균타수</ion-label>
+        <ion-select interface="action-sheet" [(ngModel)]="me.profile.golf_score" cancelText="닫기" okText="확인" placeholder="선택하세요" (ionChange)="profileChange('score', $event)">
+          <ion-select-option [value]="2">싱글</ion-select-option>
+          <ion-select-option [value]="3">80-90타</ion-select-option>
+          <ion-select-option [value]="4">90-100타</ion-select-option>
+          <ion-select-option [value]="5">100-110타</ion-select-option>
+          <ion-select-option [value]="6">110타 이하</ion-select-option>
+          <ion-select-option [value]="7">초보</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="inset" mode="md" [ngClass]="{ 'non-value': me.profile.golf_year==0 }">
+        <ion-label>골프경력</ion-label>
+        <ion-select interface="action-sheet" [(ngModel)]="me.profile.golf_year" cancelText="닫기" okText="확인" placeholder="선택하세요" (ionChange)="profileChange('year', $event)">
+          <ion-select-option [value]="1">1년 이하</ion-select-option>
+          <ion-select-option [value]="2">2-3년</ion-select-option>
+          <ion-select-option [value]="3">4-5년</ion-select-option>
+          <ion-select-option [value]="4">6-7년</ion-select-option>
+          <ion-select-option [value]="5">8-9년</ion-select-option>
+          <ion-select-option [value]="6">10년 이상</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="inset" mode="md" [ngClass]="{ 'non-value': me.profile.golf_frequency==0 }">
+        <ion-label>월라운딩 횟수</ion-label>
+        <ion-select interface="action-sheet" [(ngModel)]="me.profile.golf_frequency" cancelText="닫기" okText="확인" placeholder="선택하세요" (ionChange)="profileChange('frequency', $event)">
+          <ion-select-option [value]="1">1회 이하</ion-select-option>
+          <ion-select-option [value]="2">1-2회</ion-select-option>
+          <ion-select-option [value]="3">2-3회</ion-select-option>
+          <ion-select-option [value]="4">4-5회</ion-select-option>
+          <ion-select-option [value]="5">6-7회</ion-select-option>
+          <ion-select-option [value]="6">8-9회</ion-select-option>
+          <ion-select-option [value]="7">10회 이상</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="inset" mode="md" [ngClass]="{ 'non-value': me.profile.golf_oversea==0 }">
+        <ion-label>해외골프 횟수</ion-label>
+        <ion-select interface="action-sheet" [(ngModel)]="me.profile.golf_oversea" cancelText="닫기" okText="확인" placeholder="선택하세요" (ionChange)="profileChange('oversea', $event)">
+          <ion-select-option [value]="1">1회 이하</ion-select-option>
+          <ion-select-option [value]="2">1-2회</ion-select-option>
+          <ion-select-option [value]="3">2-3회</ion-select-option>
+          <ion-select-option [value]="4">4-5회</ion-select-option>
+          <ion-select-option [value]="5">6-7회</ion-select-option>
+          <ion-select-option [value]="6">8-9회</ion-select-option>
+          <ion-select-option [value]="7">10회 이상</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="full" mode="md" [ngClass]="{ 'non-value': me.profile.golf_membership==0 }">
+        <ion-label>보유 골프회원권</ion-label>
+        <ion-select *ngIf="clubLists" interface="action-sheet" [(ngModel)]="me.profile.golf_membership" cancelText="닫기" okText="확인" placeholder="선택하세요" (ionChange)="profileChange('membership', $event)">
+          <ion-select-option [value]="0">없음</ion-select-option>
+          <ion-select-option *ngFor="let item of clubLists" [value]=item.id>{{item.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list mode="ios" class="ion-margin-bottom">
+      <ion-item class="subject-line" lines="none" mode="md">
+        <ion-label>
+          <strong>자주가는 골프장</strong>
+        </ion-label>
+      </ion-item>
+      <div class="ion-padding">
+        <ion-chip *ngFor="let club of me.clubs; let i = index">
+          <ion-label>[{{club.region}}] {{club.name}}</ion-label>
+          <ion-icon name="close-circle" (click)="clubDelete(club.id, i)"></ion-icon>
+        </ion-chip>
+        <div class="ion-padding-top">
+          <ion-button expand="block" color="primary" fill="outline" strong (click)="searchGolf()">골프장 등록</ion-button>
+        </div>
+      </div>
+    </ion-list>
+    
+    <ion-list mode="ios" class="ion-margin-bottom">
+      <ion-item class="subject-line" lines="none" mode="md">
+        <ion-label>
+          <strong>내 소개</strong>
+        </ion-label>
+        <ion-button color="primary" fill="outline" (click)="profileChange('bio', me.profile.bio)">
+          수정
+        </ion-button>
+      </ion-item>
+      <ion-item mode="md">
+        <ion-textarea rows="4" [(ngModel)]="me.profile.bio" placeholder="입력하세요."></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+  </div>
+  
+  </ion-content>

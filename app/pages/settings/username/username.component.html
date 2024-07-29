@@ -1,0 +1,35 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-title>닉네임 변경</ion-title>
+    <ion-buttons slot="end" mode="md">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <form [formGroup]="usernameForm" novalidate>
+    <ion-list mode="ios" class="ion-no-margin">
+      <ion-item lines="inset" mode="md">
+        <ion-label>현재 닉네임</ion-label>
+        <ng-container *ngIf="me">
+          <ion-label class="ion-text-right">{{ me.username }}</ion-label>
+        </ng-container>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>변경 닉네임</ion-label>
+        <ion-input formControlName="username" class="ion-text-right" type="text" placeholder="한글 2~8자 입력"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button color="medium" size="large" expand="block" (click)="change()" [disabled]="!usernameForm.valid">
+        확인
+      </ion-button>
+    </div>
+  </form>
+
+</ion-content>

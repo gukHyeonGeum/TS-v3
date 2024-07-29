@@ -1,0 +1,15 @@
+<div class="modal-content ion-padding-top ion-padding-bottom">
+  <div class="profile ion-margin-top ion-text-center">
+    <ion-avatar>
+      <img [src]="data.thumbnail_image" />
+    </ion-avatar>
+    <h6><strong>{{ data.poster }}</strong></h6>
+    <p>{{ data.gender | gender }} | {{ data.geo_location }} | {{ data.dob | age }}</p>
+    <p>매칭하시겠습니까?</p>
+  </div>
+</div>
+<ion-footer>
+  <ion-button class="ion-no-margin" expand="full" size="large" color="primary" strong (click)="submit()">
+    매칭 완료
+  </ion-button>
+</ion-footer>

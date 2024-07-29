@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-list mode="ios">
+    <ion-item (click)="store()" mode="md" lines="none" class="ion-text-center ion-margin-top">
+      <ion-label color="primary"><h2><u>{{ data.name }}</u></h2></ion-label>
+    </ion-item>
+    <ion-item mode="md" lines="none" class="ion-margin-top">
+      <ion-label class="ion-text-wrap">{{ data.address }}</ion-label>
+    </ion-item>
+    <ion-item mode="md" lines="none">
+      <ion-label>{{ data.phone }}</ion-label>
+      <ion-button href="tel:{{data.phone}}" color="dark" expand="block" shape="round" fill="outline" size="default">
+        <ion-icon slot="icon-only" name="call"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer mode="ios" class="ion-no-border">
+  <ion-toolbar class="ion-no-padding">
+    <ion-button (click)="close(true)" expand="block" strong class="ion-no-margin" >
+      스크린 번개 만들기
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

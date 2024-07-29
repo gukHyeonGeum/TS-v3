@@ -1,0 +1,118 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/package" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>상세보기</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <ng-container *ngIf="list">
+      
+    <ion-list>
+      <img src="{{webRoot + '/images/package/' + list.code + '.jpg'}}" />
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>골프장</p>
+          {{ list.golf }}
+        </ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>가격</p>
+          {{ list.minPrice | number }}원~
+          <h6>{{ list.week }} 기준</h6>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item lines="none" mode="md">
+        <ion-label><p>경비정보</p></ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>호텔</p>
+          {{ list.hotel }}
+        </ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>숙박정보</p>
+          {{ list.room }}
+        </ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>식사정보</p>
+          {{ list.breakfast }}
+        </ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>기타</p>
+          {{ list.etc }}
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item lines="none" mode="md">
+        <ion-label><p>일정</p></ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          1일차
+          <p>- {{ list.day_one_1 }}</p>
+          <p>- {{ list.day_one_2 }}</p>
+          <p>- {{ list.day_one_3 }}</p>
+          <p>- {{ list.day_one_4 }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          2일차
+          <p>- {{ list.day_two_1 }}</p>
+          <p>- {{ list.day_two_2 }}</p>
+          <p>- {{ list.day_two_3 }}</p>
+          <p>- {{ list.day_two_4 }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item lines="none" mode="md">
+        <ion-label><p>여행시 유의사항</p></ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>{{ list.notice }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item lines="none" mode="md">
+        <ion-label><p>무통장 입금안내</p></ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          {{ bankInfo?.account }}<br />
+          {{ bankInfo?.company}}
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" mode="md">
+        <ion-label><p>상담 (호텔 및 기타문의)</p></ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          연락처 : {{ list.tel }}
+        </ion-label>
+      </ion-item>
+      <div class="ion-padding">
+        <ion-button expand="block" mode="md" color="secondary" size="large" href="tel:{{ list.tel }}" (click)="telClick()">
+          <ion-icon slot="start" name="call" mode="ios"></ion-icon> 통화하기
+        </ion-button>
+      </div>
+    </ion-list>
+
+  </ng-container>
+</ion-content>

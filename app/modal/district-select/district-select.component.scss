@@ -1,0 +1,134 @@
+ion-header {
+  ion-buttons {
+      max-height: 38px;
+  }
+}
+
+.wrap-guide {
+  .lbl-guide-1 {
+    margin-top: 14px;
+    color: #939393;
+    font-size: 12px;
+    text-align: center;
+  }
+  .lbl-guide-2 {
+    margin-top: 8px;
+    color: #262626;
+    font-size: 18px;
+    text-align: center;
+  }
+}
+
+.pnl-tab {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: row;
+  .tab-item {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    color: #919191;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #bebebe;
+    border-radius: 8px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    &.left {
+      margin-left: 17px;
+      margin-right: 3px;
+    }
+    &.right {
+      margin-left: 3px;
+      margin-right: 17px;
+    }
+    &.selected {
+      color: var(--ion-color-primary);
+      border: 1px solid var(--ion-color-primary);
+    }
+  }
+}
+
+ion-content {
+  --background: var(--ion-color-white);
+  .pnl-location {
+    margin-top: 54px;
+    color: #646464;
+    font-size: 15px;
+    text-align: center;
+  }
+  .container {
+    margin-top: 26px;
+    display: flex;
+    .pnl-sido {
+      height: min-content;
+      display: grid;
+      grid-template-areas: "a a";
+      grid-gap: 1px;
+      .cll-sido {
+        height: min-content;
+        min-width: 72px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: #ebf6f2;
+        outline: 1px solid #c7d8d1;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        &.selected {
+          color: white;
+          background-color: #313131;
+          outline: 1px solid #313131;
+          z-index: 2;
+        }
+      }
+    }
+    .pnl-sigungu {
+      height: min-content;
+      margin-left: 6px;
+      display: grid;
+      grid-template-columns: repeat(3, 33.3333fr);
+      grid-gap: 1px;
+      flex: 1;
+      .cll-sigungu {
+        height: min-content;
+        min-width: 70px;
+        padding-left: 6px;
+        padding-right: 6px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: #f5f5f5;
+        outline: 1px solid #d5d5d5;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        &.selected {
+          color: white;
+          background-color: #313131;
+          outline: 1px solid #313131;
+          z-index: 2;
+        }
+      }
+      .cll-last {
+        width: 1px;
+        height: 100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-left: 1px solid #d5d5d5;
+      }
+    }
+  }
+}
+
+ion-footer {
+  ion-toolbar {
+    --background: var(--ion-color-white);
+    ion-button {
+      margin: 10px;
+      --background: var(--ion-color-primary);
+    }
+  }
+}

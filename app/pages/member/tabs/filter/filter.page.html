@@ -1,0 +1,117 @@
+<ion-content>
+
+  <form [formGroup]="filterForm" novalidate>
+
+    <ion-list mode="ios" class="ion-no-padding">
+      <ion-item-divider mode="md">
+        <ion-label color="dark"><h2><strong>조건검색</strong></h2></ion-label>
+      </ion-item-divider>
+      <ion-item lines="none" mode="md" class="option-text">
+        <ion-label>성별</ion-label>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-input type="hidden" formControlName="gender"></ion-input>
+        <ion-segment mode="ios" (ionChange)="segmentButtonClicked($event)">
+          <ion-segment-button mode="ios" value="all">
+            <ion-label>무관</ion-label>
+          </ion-segment-button>
+          <ion-segment-button mode="ios" value="female">
+            <ion-label>여성</ion-label>
+          </ion-segment-button>
+          <ion-segment-button mode="ios" value="male">
+            <ion-label>남성</ion-label>
+          </ion-segment-button>
+        </ion-segment>  
+      </ion-item>
+      <ion-item lines="none" mode="md" class="option-text">
+        <ion-label>
+          나이
+          <ion-text color="primary" class="ion-padding-start">
+            {{filterForm.value['age']['lower']}}세~
+            {{filterForm.value['age']['upper']}}세{{filterForm.value['age']['upper']==60?'이상':null}}
+          </ion-text>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-range formControlName="age" class="ion-no-padding" mode="md" id="dual-range-age" min="20" max="60" step="1" dualKnobs="true" snaps="true">
+          <ion-label slot="start">20</ion-label>
+          <ion-label slot="end">60~</ion-label>
+        </ion-range>
+      </ion-item>
+      <ion-item lines="none" mode="md" class="option-text">
+        <ion-label>거리 
+          <ion-text color="primary" class="ion-padding-start">
+            {{ filterForm.value['distance']? filterForm.value['distance'] + 'km 이내' : '0km' }}
+          </ion-text>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-range formControlName="distance" class="ion-no-padding" mode="md" min="0" max="200" step="10" snaps="true">
+          <ion-label slot="start">0</ion-label>
+          <ion-label slot="end">200</ion-label>
+        </ion-range>
+      </ion-item>
+    </ion-list>
+    <ion-list mode="ios" class="ion-no-padding">
+      <ion-item-divider mode="md">
+        <ion-label color="dark"><h2><strong>선호도(선택 1개)</strong></h2></ion-label>
+      </ion-item-divider>
+      <ion-item lines="full" mode="md">
+        <ion-label>평균타수</ion-label>
+        <ion-select interface="popover" formControlName="golf_score" cancelText="취소" okText="확인" placeholder="선택하세요" (click)="preference()">
+          <ion-select-option [value]="2">싱글</ion-select-option>
+          <ion-select-option [value]="3">80-90타</ion-select-option>
+          <ion-select-option [value]="4">90-100타</ion-select-option>
+          <ion-select-option [value]="5">100-110타</ion-select-option>
+          <ion-select-option [value]="6">110타 이하</ion-select-option>
+          <ion-select-option [value]="7">초보</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>골프경력</ion-label>
+        <ion-select interface="popover" formControlName="golf_year" cancelText="취소" okText="확인" placeholder="선택하세요" (click)="preference()">
+          <ion-select-option [value]="1">1년 이하</ion-select-option>
+          <ion-select-option [value]="2">2-3년</ion-select-option>
+          <ion-select-option [value]="3">4-5년</ion-select-option>
+          <ion-select-option [value]="4">6-7년</ion-select-option>
+          <ion-select-option [value]="5">8-9년</ion-select-option>
+          <ion-select-option [value]="6">10년 이상</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>월라운딩 횟수</ion-label>
+        <ion-select interface="popover" formControlName="golf_frequency" cancelText="취소" okText="확인" placeholder="선택하세요" (click)="preference()">
+          <ion-select-option [value]="1">1회 이하</ion-select-option>
+          <ion-select-option [value]="2">1-2회</ion-select-option>
+          <ion-select-option [value]="3">2-3회</ion-select-option>
+          <ion-select-option [value]="4">4-5회</ion-select-option>
+          <ion-select-option [value]="5">6-7회</ion-select-option>
+          <ion-select-option [value]="6">8-9회</ion-select-option>
+          <ion-select-option [value]="7">10회 이상</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>해외골프 횟수</ion-label>
+        <ion-select interface="popover" formControlName="golf_oversea" cancelText="취소" okText="확인" placeholder="선택하세요" (click)="preference()">
+          <ion-select-option [value]="1">1회 이하</ion-select-option>
+          <ion-select-option [value]="2">1-2회</ion-select-option>
+          <ion-select-option [value]="3">2-3회</ion-select-option>
+          <ion-select-option [value]="4">4-5회</ion-select-option>
+          <ion-select-option [value]="5">6-7회</ion-select-option>
+          <ion-select-option [value]="6">8-9회</ion-select-option>
+          <ion-select-option [value]="7">10회 이상</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+  </form>
+
+</ion-content>
+
+<ion-footer mode="ios" class="ion-no-border">
+  <ion-toolbar class="ion-no-padding">
+    <ion-button class="ion-no-margin" expand="block" strong (click)="search()" [disabled]="!filterForm.valid">
+      검색하기
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

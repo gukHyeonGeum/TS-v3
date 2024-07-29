@@ -1,0 +1,59 @@
+<div class="modal-content ion-padding-top ion-padding-bottom">
+  <div class="profile ion-margin-top ion-text-center">
+    <ng-container *ngIf="type === 'request'; else elseContent">
+      <p>
+        신청내용과 프로필은 초청자외에는<br />
+        비공개로 진행되니 안심하세요
+      </p>
+    </ng-container>
+    <ng-template #elseContent>
+      <ng-container *ngIf="me.id == data.poster_id; else elseRsvp">
+        <ion-avatar>
+          <img [src]="rsvp.thumbnail_image" />  
+        </ion-avatar>
+        <h6><strong>{{ rsvp.poster }}</strong></h6>
+        <p>{{ rsvp.gender | gender }} | {{ rsvp.geo_location }} | {{rsvp.dob | age}}</p>
+      </ng-container>
+      <ng-template #elseRsvp>
+        <ion-avatar>
+          <img [src]="data.thumbnail_image" />  
+        </ion-avatar>
+        <h6><strong>{{ data.poster }}</strong></h6>
+        <p>{{ data.gender | gender }} | {{ data.geo_location }} | {{data.dob | age}}</p>
+      </ng-template>
+      <div class="giftMoney">
+        <p>{{ data.gender == 'male' ? '선물' : '희망' }} 기프트머니 {{ data.game_fee | number }}원</p>
+      </div>
+    </ng-template>
+  </div>
+  <ng-container [ngSwitch]="type">
+    <ng-container *ngSwitchCase="'request'">
+      <ion-item lines="none" mode="md">
+        <ion-label class="ion-text-center">신청하시겠습니까?</ion-label>
+      </ion-item>
+    </ng-container>
+    <ng-container *ngSwitchCase="'canceled'">
+      <ion-item lines="none" mode="md">
+        <ion-label class="ion-text-center">신청을 취소하시겠습니까?</ion-label>
+      </ion-item>
+      <p class="ion-text-center ion-no-margin"><u>재신청은 1회만 가능합니다.</u></p>
+    </ng-container>
+    <ng-container *ngSwitchCase="'revoke'">
+      <ion-item lines="none" mode="md" [ngClass]="{'ion-margin-top ion-padding-top': me.id == data.poster_id}">
+        <ion-label class="ion-text-center">매칭을 취소하시겠습니까?</ion-label>
+      </ion-item>
+      <ng-container *ngIf="me.id != data.poster_id">      
+        <p class="ion-text-center ion-no-margin"><u>매칭완료 후 취소는 재신청을 할 수 없습니다.</u></p>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+    
+    </ng-container>
+  </ng-container>
+</div>
+
+<ion-footer>
+  <ion-button class="ion-no-margin" expand="full" size="large" color="primary" strong (click)="submit()">
+    {{ btnTitle }}
+  </ion-button>
+</ion-footer>

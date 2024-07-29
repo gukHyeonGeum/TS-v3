@@ -1,0 +1,33 @@
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+	<ion-list mode="ios">
+		<div class="grid-list">
+			<ul>
+        <ng-container *ngFor="let list of lists">
+          <li>
+            <div class="thumb" (click)="profile(list.user_id)">
+              <ion-avatar>
+                <ion-img [src]="list.thumbnail_image.replace('thumb','medium') | common: {type: 'profileChange'}" (ionError)="imgError($event)"></ion-img>
+              </ion-avatar>
+              <ion-label>{{ list.username }}</ion-label>
+            </div>
+          </li>
+        </ng-container>
+			</ul>
+		</div>
+  </ion-list>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

@@ -1,0 +1,41 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>계정</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <ng-container *ngIf="me && joinType">
+  
+    <ion-list mode="ios">
+      <ion-item lines="none" mode="md">
+        <ion-label>
+          <p>이메일</p>
+          {{ me.email }}
+        </ion-label>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>
+          <p>가입유형</p>
+          <ng-container *ngFor="let type of joinType">
+            <div>소셜 로그인({{ type.provider_type }})</div>
+          </ng-container>
+          <ng-container *ngIf="!joinType?.length">
+            이메일 로그인
+          </ng-container>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="full" mode="md" (click)="dropModal(isApple)">
+        <ion-label>{{ dropTitle }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+  </ng-container>
+
+</ion-content>

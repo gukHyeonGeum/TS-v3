@@ -1,0 +1,60 @@
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="email-login" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>이메일 찾기</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="findNickForm" novalidate>
+    <ion-list mode="md" class="border-bottom">
+      <ion-list-header>
+        <ion-label><p>닉네임으로 찾기</p></ion-label>
+      </ion-list-header>
+      <ion-item mode="md" lines="inset">
+        <ion-input type="text" formControlName="nickname" placeholder="닉네임 입력"></ion-input>
+      </ion-item>
+      <div class="ion-padding ion-margin-top">
+        <ion-button mode="md" color="medium" expand="block" (click)="findNick()" [disabled]="!findNickForm.valid">
+          확인
+        </ion-button>
+      </div>
+    </ion-list>
+  </form>
+
+  <form [formGroup]="findUserForm" novalidate>
+    <ion-list mode="md" class="ion-margin-top">
+      <ion-list-header>
+        <ion-label><p>본인확인으로 찾기 (본인인증 했을시)</p></ion-label>
+      </ion-list-header>
+      <ion-item lines="none" mode="md">
+        <ion-label position="fixed">이름</ion-label>
+        <ion-input slot="end" class="ion-text-right" type="text" formControlName="realname" placeholder="입력하세요"></ion-input>
+      </ion-item>
+      <ion-item lines="none" mode="md">
+        <ion-label position="fixed">생년월일</ion-label>
+        <ion-datetime slot="end" placeholder="선택하세요"  display-format="YYYY-MM-DD" min="1930" formControlName="birth" doneText="선택" cancelText="취소"></ion-datetime>
+      </ion-item>
+      <ion-item lines="none" mode="md">
+        <ion-label position="fixed">성별</ion-label>
+        <ion-select slot="end" interface="popover" placeholder="선택하세요" formControlName="gender" okText="확인" cancelText="취소">
+          <ion-select-option value="female">여성</ion-select-option>
+          <ion-select-option value="male">남성</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label position="fixed">휴대폰번호</ion-label>
+        <ion-input slot="end" class="ion-text-right" type="tel" formControlName="phone" placeholder="입력하세요"></ion-input>
+      </ion-item>
+      <div class="ion-padding ion-margin-top">
+        <ion-button mode="md" color="medium" expand="block" (click)="findUser()" [disabled]="!findUserForm.valid">
+          확인
+        </ion-button>
+      </div>
+    </ion-list>
+  </form>
+
+</ion-content>

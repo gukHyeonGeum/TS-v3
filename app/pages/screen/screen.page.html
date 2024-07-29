@@ -1,0 +1,172 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>스크린 번개</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/screen/map']" routerDirection="root">
+        <ion-icon slot="start" name="map"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-segment mode="md" color="dark" [(ngModel)]="segment" (ionChange)="segmentChanged($event)" scrollable="true">
+    <ion-segment-button value='0'>
+      <ion-label>
+        내 번개
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value='1'>
+      <ion-label>
+        받은 번개
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-slides pager="false" [options]="slideOpts" (ionSlideWillChange)="change()">
+    <ion-slide>
+      <ion-list mode="ios" [ngClass]="{'show': segment==0, 'hide': segment!=0}">
+        <div class="pnl-screen-guide" (click)="showGuide()">
+          <div class="lbl-screen-guide">스크린 번개는 어떤 서비스 인가요?</div>
+          <ion-icon src="../../../assets/images/img_characters.svg"></ion-icon>
+        </div>
+        <ng-container *ngFor="let list of lists">
+          <ion-item lines="full" mode="md" [ngClass]="{'close': list.deleted_at}" (click)="routerLink('send', list)">
+            <ion-label>
+              <strong>
+                {{ list.golf_store_name }}
+              </strong>
+              <p>
+                {{ list.golf_time | date:'M.dd(E) H:mm':'+0900':'ko-KR' }}
+              </p>
+            </ion-label>
+            <ion-label class="ion-text-right ion-text-wrap">
+              <ng-container *ngIf="list.deleted_at; else elseTemplate">
+                <ng-container *ngIf="list.rating; else elseEnd">
+                  <ion-text color="warning">
+                    ★ 
+                  </ion-text>
+                  {{ list.rating | common: { type: 'rating' } }}
+                </ng-container>
+                <ng-template #elseEnd>
+                  <p>종료</p>
+                </ng-template>
+              </ng-container>
+              <ng-template #elseTemplate>
+                <ng-container *ngIf="list.partner_id; else requestCnt">
+                  <ion-badge mode='ios' color="success">매칭</ion-badge>
+                </ng-container>
+                <ng-template #requestCnt>
+                  <ion-badge mode='ios'>신청 {{ list.rsvpscnt }}명</ion-badge>
+                </ng-template>
+              </ng-template>
+              <p class="letter-spacing" *ngIf="list.game_fee"><ion-icon slot="start" name="gift-outline"></ion-icon> 기프트 {{ (list.game_fee/10000) }}만</p>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+    </ion-slide>
+    <ion-slide>
+      <ion-list mode="ios" class="request" [ngClass]="{'show': segment==1, 'hide': segment!=1}">
+        <div class="pnl-screen-guide" (click)="showGuide()">
+          <div class="lbl-screen-guide">스크린 번개는 어떤 서비스 인가요?</div>
+          <ion-icon src="../../../assets/images/img_characters.svg"></ion-icon>
+        </div>
+        <ng-container *ngFor="let list of lists">
+          <ion-item lines="inset" mode="md" [ngClass]="{'close': list.deleted_at}"  (click)="routerLink('request', list)">
+            <ion-avatar slot="start">
+              <ion-img [src]="list.thumbnail_image" (ionError)="imgError($event)"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <strong class="letter-spacing">
+                {{ list.golf_store_name }}
+              </strong>
+              <p>
+                {{ list.golf_time | date:'M.dd(E) H:mm':'+0900':'ko-KR' }}
+              </p>
+            </ion-label>
+            <ion-label class="ion-text-right ion-text-wrap">
+              <ng-container *ngIf="list.deleted_at && list.rsvp_cnt===0; else elseStatus">
+                <p>종료</p>
+              </ng-container>
+              <ng-template #elseStatus>
+                <ng-container [ngSwitch]="list.rsvp_status">
+                  <p *ngSwitchCase="null">
+                    <ng-container *ngIf="list.partner_id; else noPartner">
+                      <ion-badge mode='ios' color="success">매칭</ion-badge>
+                    </ng-container>
+                    <ng-template #noPartner>
+                      <ng-container *ngIf="list.rsvp_cnt; else partner">
+                        <ion-badge mode='ios' color="light badge-light-border">신청 {{ list.rsvp_cnt }}명</ion-badge>
+                      </ng-container>
+                      <ng-template #partner>
+                        {{ list.golf_partner | filters: 'screen_golf_partner' }}
+                      </ng-template>
+                    </ng-template>
+                  </p>
+                  <p *ngSwitchCase="'0'">
+                    <ng-container *ngIf="list.rsvp_deleted_at; else request">
+                      취소
+                    </ng-container>
+                    <ng-template #request>
+                      <ion-badge mode='ios'>신청중</ion-badge>
+                    </ng-template>
+                  </p>
+                  <p *ngSwitchCase="1">
+                    <ion-badge mode='ios' color="success">매칭</ion-badge>
+                  </p>
+                  <p *ngSwitchCase="'2'">
+                    초청자 취소
+                  </p>
+                  <p *ngSwitchCase="'3'">
+                    매칭취소
+                  </p>
+                </ng-container>
+              </ng-template>
+              <p class="letter-spacing">
+                <ng-container *ngIf="list.game_fee; then isGamefee; else empty"></ng-container>
+                <ng-template #isGamefee>
+                  <ion-icon slot="start" name="gift-outline"></ion-icon> 기프트 {{ (list.game_fee/10000) }}만
+                </ng-template>
+                <ng-template #empty>
+                  &nbsp;
+                </ng-template>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+    </ion-slide>
+  </ion-slides>
+
+  <ng-container *ngIf="lists && !lists?.length">
+    <ion-text color="medium">
+      <h6 class="ion-text-center">내역이 없습니다.</h6>
+    </ion-text>
+  </ng-container>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="50px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer mode="ios" class="ion-no-border">
+  <ion-toolbar class="ion-no-padding">
+    <ion-button class="ion-no-margin" (click)="create()" expand="block" fill="outline" strong>
+      스크린 번개 만들기
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,61 @@
+<ion-header mode="ios">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="email-login" mode="md"></ion-back-button>
+      </ion-buttons>
+      <ion-title>비밀번호 찾기</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+
+  <form [formGroup]="findPassPhoneForm" novalidate>
+    <ion-list mode="ios" class="border-bottom">
+      <ion-list-header mode="md">
+        <ion-label><p>휴대폰으로 찾기</p></ion-label>
+      </ion-list-header>
+      <ion-item mode="md" lines="inset">
+        <ion-label position="stacked" mode="md">이름</ion-label>
+        <ion-input type="text" formControlName="realname" placeholder="입력하세요"></ion-input>
+      </ion-item>
+      <ion-item mode="md" lines="inset">
+        <ion-label position="stacked" mode="md">휴대폰번호</ion-label>
+        <ion-input type="tel" formControlName="phone" placeholder="입력하세요"></ion-input>
+      </ion-item>
+      <div class="ion-padding ion-margin-top">
+        <ion-button mode="md" color="medium" size="default" expand="block" (click)="findPassPhone()" [disabled]="!findPassPhoneForm.valid">
+          확인
+        </ion-button>
+      </div>
+    </ion-list>
+  </form>
+
+  <form [formGroup]="findPassEmailForm" novalidate>
+    <ion-list mode="ios">
+      <ion-list-header mode="md">
+        <ion-label><p>이메일로 찾기</p></ion-label>
+      </ion-list-header>
+      <ion-item lines="inset" mode="md">
+        <ion-input type="text" formControlName="email" placeholder="이메일 입력"></ion-input> @
+        <ion-input type="text" formControlName="domain" placeholder="직접 입력"></ion-input>
+        <ion-select interface="popover" placeholder="선택하세요" formControlName="selEmail" okText="확인" cancelText="취소" (ionChange)="selEmailChange($event)">
+          <ion-select-option value="naver.com">naver.com</ion-select-option>
+          <ion-select-option value="hanmail.net">hanmail.net</ion-select-option>
+          <ion-select-option value="nate.com">nate.com</ion-select-option>
+          <ion-select-option value="gmail.com">gmail.com</ion-select-option>
+          <ion-select-option value="hotmail.com">hotmail.com</ion-select-option>
+          <ion-select-option value="empas.com">empas.com</ion-select-option>
+          <ion-select-option value="dreamwiz.com">dreamwiz.com</ion-select-option>
+          <ion-select-option value="korea.com">korea.com</ion-select-option>
+        </ion-select>
+      </ion-item>
+    
+      <div class="ion-padding ion-margin-top">
+        <ion-button mode="md" color="medium" size="default" expand="block" (click)="findPassEmail()" [disabled]="!findPassEmailForm.valid">
+          확인
+        </ion-button>
+      </div>
+    </ion-list>
+  </form>
+
+</ion-content>

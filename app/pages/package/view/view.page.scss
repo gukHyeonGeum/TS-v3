@@ -1,0 +1,24 @@
+ion-header {
+  ion-buttons {
+      max-height: 38px;
+  }
+}
+
+ion-list {
+  margin-bottom: 10px;
+}
+
+ion-label {
+  p {
+    margin: 6px 0;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+  h6 {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+  }
+}
+
+ion-toolbar {
+  --border-style: none;
+}

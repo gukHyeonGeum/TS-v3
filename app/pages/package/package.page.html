@@ -1,0 +1,39 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>패키지</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list mode="ios">
+    <ng-container *ngFor="let list of lists">
+      <ion-card [routerLink]="['view']" [queryParams]="list" routerDirection="forward">
+        <img src="{{webRoot + '/images/package/' + list.code + '.jpg'}}" />
+        <ion-card-header>
+          <ion-card-subtitle>{{ list.room }}</ion-card-subtitle>
+          <ion-card-title>{{ list.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <h2><strong>{{ list.minPrice | number }}원</strong>~</h2>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>  
+  </ion-list>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

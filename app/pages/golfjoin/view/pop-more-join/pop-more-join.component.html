@@ -1,0 +1,31 @@
+<ion-list mode="ios">
+  <ng-container *ngIf="info.statuschk || rsvp.status">
+    <ion-item lines="full" mode="md" href="tel:{{ is_auth ? rsvp.phone : info.phone }}">
+      <ion-label>통화하기</ion-label>
+    </ion-item>
+  </ng-container>
+  <ion-item lines="full" mode="md" (click)="message()">
+    <ion-label>채팅하기</ion-label>
+  </ion-item>
+  <ng-container *ngIf="is_auth">
+    <ng-container *ngIf="!rsvp.deleted_at && !rsvp.status && !info.deleted_at">
+      <ion-item lines="full" mode="md" (click)="confirm(rsvp)">
+        <ion-label>멤버 선택</ion-label>
+      </ion-item>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="me.id == rsvp.poster_id">
+    <ng-container *ngIf="!rsvp.deleted_at && !rsvp.status">
+      <ion-item lines="full" mode="md" (click)="canceled(rsvp)">
+        <ion-label>조인신청 취소</ion-label>
+      </ion-item>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="is_auth || me.id == rsvp.poster_id">
+    <ng-container *ngIf="!rsvp.deleted_at && rsvp.status">
+      <ion-item lines="full" mode="md" (click)="canceled(rsvp)">
+        <ion-label>멤버 취소</ion-label>
+      </ion-item>
+    </ng-container>
+  </ng-container>
+</ion-list>

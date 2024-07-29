@@ -1,0 +1,132 @@
+ion-header {
+  ion-buttons {
+      max-height: 38px;
+  }
+}
+
+ion-list {
+  margin-bottom: 10px;
+}
+
+ion-item {
+  &.partner {
+    --background: rgba(var(--ion-color-warning-rgb), 0.4);
+  }
+}
+
+ion-item-divider {
+  border-width: 0;
+}
+
+.p-info {
+  .margin-box {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(var(--ion-color-medium-rgb), 0.3);;
+  }
+  ion-item-divider {
+    border-width: 0 0 0.55px 0 !important;
+    ion-label {
+      &:first-child {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }  
+  ion-item {
+    --min-height: 32px;
+    ion-icon {
+      font-size: 20px;
+      margin: 4px 16px 4px 0;
+    }
+    ion-label {
+      margin: 4px 0;
+    }
+    .icon {
+      font-size: 18px;
+      max-width: 20px !important;
+      margin-right: 16px;
+      color: rgba(var(--ion-color-dark-rgb), 0.7);
+    }
+  }
+}
+
+ion-thumbnail {
+  width: 65px;
+  height: 65px;
+  img, ion-img {
+    border-radius: 40%;
+  }
+}
+
+ion-buttons {
+  ion-button {
+    height: 40px;
+    --border-width: 1px;
+  }
+}
+
+ion-footer {
+  ion-toolbar {
+    --border-color: rgba(var(--ion-color-medium-rgb), 0.3);
+  }
+  ion-button {
+    height: 40px;
+  }
+  .lbl-bottom-comment {
+    display: flex;
+    min-height: 30px;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+  }
+}
+
+ion-label {
+  p {
+    margin: 6px 0;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+}
+
+.btn-more {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  font-size: 17px;
+}
+
+.btn-status {
+  margin: 50px 0 0;
+  height: 30px;
+}
+
+.badge-status {
+  margin: 50px 0 0;
+}
+
+.label-stacked {
+	font-size: 18px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.btn-modify {
+  font-size: 14px;
+  --background: var(--ion-color-medium);
+  --background-activated: var(--ion-color-medium-tint);
+  --border-color: var(--ion-color-medium-tint);
+  --color: var(--ion-color-white);
+  min-width: 100px;
+}
+
+.people {
+  font-size: 12px;
+  color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+}
+
+.badge-status {
+  margin-top: 50px;
+}

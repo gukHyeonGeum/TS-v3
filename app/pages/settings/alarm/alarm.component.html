@@ -1,0 +1,25 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>알림</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <ion-list mode="ios">
+    <ion-item lines="none" mode="md">
+      <ion-label>
+        알림받기 
+        <p class="ion-text-wrap">메시지, 친구요청 등을 푸시알림으로 알려드립니다.</p>
+      </ion-label>
+      
+      <ion-toggle color="primary" (ionChange)="alarmToggle($event)" checked="{{push}}"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

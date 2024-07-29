@@ -1,0 +1,41 @@
+ion-item {
+  --min-height: 80px;
+  &.end {
+    --background: rgba(var(--ion-color-medium-rgb), 0.2);
+  }
+}
+
+ion-list {
+  ion-label {
+    &:first-child {
+      max-width: 100px !important;
+    }
+    &:last-child {
+      max-width: 80px !important;
+    }
+  }
+}
+
+ion-label {
+  p {
+    margin-top: 6px;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+}
+
+ion-thumbnail {
+  margin-right: 32px;
+}
+
+ion-avatar {
+  width: 50px;
+  height: 50px;
+  img, ion-img {
+    border-radius: 40%;
+  }
+}
+
+ion-fab {
+	bottom: 20px;
+	right: 20px;
+}

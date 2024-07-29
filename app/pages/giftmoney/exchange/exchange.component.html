@@ -1,0 +1,86 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>기프트머니 교환</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-list mode="md">
+    <ion-list-header>
+      <ion-label style="text-align: center;">
+        <p>최소 5만원 부터 5만원 단위로 교환 신청 가능합니다.</p>
+        <p>교환시 수수료 10% 차감된 금액이 지급됩니다.</p>
+      </ion-label>
+    </ion-list-header>
+
+    <ion-card mode="ios">
+      <ion-item mode="md" lines="none" color="light">
+        <ion-label>보유 기프트머니</ion-label>
+        <ion-label class="ion-text-right"><strong>{{ me?.money | number }}</strong> 원</ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none" color="light">
+        <ion-label>교환 기프트머니</ion-label>
+        <ion-label class="ion-text-right"><strong>{{ selectMoney | number }}</strong> 원</ion-label>
+      </ion-item>
+    </ion-card>
+
+    <ion-item mode="md" lines="none">
+      <ion-label>교환 기프트 머니</ion-label>
+    </ion-item>
+    <ion-grid fixed>
+      <ion-row>
+        <ng-container *ngFor="let exchange of exchangeMoneys">
+          <ion-col size="4">
+            <ion-button (click)="selectedMoney(exchange, $event)" color="medium" expand="block" [fill]="selectMoney === exchange.money ? 'solid' : 'outline'">
+              {{ exchange.title }}
+            </ion-button>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+    </ion-grid>
+
+    <ion-item mode="md" lines="none">
+      <ion-label>
+        입금 받을 계좌<br />
+        계좌가 없으면 교환요청을 할 수 없습니다.
+      </ion-label>
+    </ion-item>
+    <ng-container *ngIf="bankInfo === undefined; else bankView">
+      <div class="ion-padding">
+        <ion-button (click)="bankAccountModal()" color="medium" expand="block" fill="outline">
+          계좌 설정
+        </ion-button>
+      </div>
+    </ng-container>
+    <ng-template #bankView>
+      <ion-item lines="none">
+        <ion-label>
+          <ion-text color="dark">
+            <p>{{ bankInfo?.accountBank }}</p>
+            <p>{{ bankInfo?.accountNumber }}</p>
+            <p>{{ bankInfo?.accountName }}</p>
+          </ion-text>
+        </ion-label>
+        <ion-button (click)="bankAccountModal()" color="medium" expand="block" fill="outline">
+          수정
+        </ion-button>
+      </ion-item>
+    </ng-template>
+
+  </ion-list>
+
+</ion-content>
+<ion-footer mode="ios">
+  <ion-toolbar>
+    <ion-button (click)="submit()" mode="md" color="dark" expand="block" fill="clear" [disabled]="!selectMoney || !bankInfo?.accountNumber">
+      교환요청
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<div class="global-backdrop" [ngClass]="{'global-show': backdropShow, 'global-hide': !backdropShow}"></div>

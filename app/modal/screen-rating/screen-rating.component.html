@@ -1,0 +1,47 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="profile ion-margin-top ion-text-center">
+    <ion-avatar>
+      <img [src]="user.thumb" />
+    </ion-avatar>
+    <h6><strong>{{ user.username }}</strong></h6>
+    <p>{{ user.gender | gender }} | {{ user.geo_location }} | {{ user.dob | age }}</p>
+    <ion-button (click)="invitation()" color="dark" fill="outline" size="small">
+      매칭 정보
+    </ion-button>
+    <p>{{ user.username }}님은 어떠셨나요?</p>
+  </div>
+  <ng-container *ngFor="let item of stars; let idx = index">
+    <ion-item mode="md" lines="none">
+      <ion-label>
+        <span>{{ratingTitle[idx]}}</span>
+        <span
+        *ngFor="let starred of item; let i = index"
+        (click)='rate(i + (starred ? (value[idx] > i + 1 ? 1 : 0) : 1), idx)'
+        [ngClass]="{'fill': starred, 'empty': !starred}"
+        >
+        <ng-container *ngIf="starred; else noStar">★</ng-container>
+        <ng-template #noStar>☆</ng-template>
+      </span>
+      </ion-label>
+    </ion-item>
+  </ng-container>
+
+  <ng-container *ngIf="screen.poster_gender == 'male'; else elsePartner">
+    <p class="ion-text-center">평가하면 맞춤 골프친구를 추천해드립니다.</p>
+  </ng-container>
+  <ng-template #elsePartner>
+    <p class="ion-text-center">평가하면 {{ screen.game_fee | number }}원이 지급됩니다.</p>
+  </ng-template>
+  
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-button class="ion-no-margin" expand="full" size="large" color="primary" strong (click)="submit()">
+      {{ btnTitle }}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

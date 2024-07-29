@@ -1,0 +1,13 @@
+ion-buttons {
+  width: 100%;
+  ion-button {
+    width: 50%;
+    &:first-child {
+      border-right: 1px solid var(--ion-color-light);
+    }
+  }
+}
+
+.modal-content {
+  border-top: 1px solid rgba(var(--ion-color-dark-rgb), 0.25);
+}

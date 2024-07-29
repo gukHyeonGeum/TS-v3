@@ -1,0 +1,166 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/golfjoin" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>상세보기</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <div class="global-spinner" *ngIf="!info"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ng-container *ngIf="info">
+    <ion-list mode="ios">
+      <ion-item mode="md" lines="none">
+        <ion-label>
+          <p>
+            초청자 
+            <ng-container *ngIf="info.golf_companion!=1">
+              ({{ (info.golf_companion | filters:'companion_count').text }})
+            </ng-container>
+          </p>
+        </ion-label>
+        <ion-note slot="end">조회수 {{ info.view_count }}</ion-note>
+      </ion-item>
+      <ion-item mode="md" lines="full">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="imgSrc(info, 'invite')" (ionError)="imgError($event)" (click)="profile(info.poster_id)"></ion-img>
+        </ion-thumbnail>
+        <ion-label>
+          <strong>{{ info.poster }}</strong>
+          <p>
+            {{ info.gender | gender }} {{ info.dob | age }}세
+          </p>
+          <p>{{ info.geo_location }}</p>
+        </ion-label>
+        <ng-container *ngIf="info.statuschk">
+          <ion-button mode="md" fill="clear" slot="end" class="btn-more" (click)="popoverMore($event, me, info, info.rsvp_list)">
+            <ion-icon slot="icon-only" name="ellipsis-horizontal" color="medium" mode="ios"></ion-icon>
+          </ion-button>
+        </ng-container>
+      </ion-item>    
+    </ion-list>
+
+    <ion-list mode="ios" *ngIf="info.rsvp_list?.length">
+      <ion-item mode="md" lines="none">
+        <ion-label><p>신청자</p></ion-label>
+      </ion-item>
+      <ng-container *ngFor="let rsvp of info.rsvp_list">
+        <ion-item mode="md" lines="full" [ngClass]="{'partner': !rsvp.deleted_at && rsvp.status}">
+          <ion-thumbnail slot="start">
+            <ion-img [src]="imgSrc(rsvp)" (ionError)="imgError($event)" (click)="profile(rsvp.poster_id)"></ion-img>
+          </ion-thumbnail>
+          <ion-label>
+            <strong>{{ rsvp.poster }}</strong>
+            <ng-container *ngIf="rsvp.people">            
+              <ion-text class="people"> ({{ rsvp.people | filters : 'golf_people' }})</ion-text>
+            </ng-container>
+            <p>
+              {{ rsvp.gender | gender }} {{ rsvp.dob | age }}세
+            </p>
+            <p>{{ rsvp.geo_location }}</p>
+          </ion-label>
+          <ng-container *ngIf="is_auth">
+            <ng-container *ngIf="!rsvp.deleted_at">
+              <ion-button mode="md" fill="clear" slot="end" class="btn-more" (click)="popoverMore($event, me, info, rsvp)">
+                <ion-icon slot="icon-only" name="ellipsis-horizontal" color="medium" mode="md"></ion-icon>
+              </ion-button>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="is_admin || is_auth || rsvp.poster_id==me?.id">
+            <ion-badge class="badge-status" color="medium" mode="ios" *ngIf="rsvp.deleted_at">취소</ion-badge>
+          </ng-container>
+          <ng-container *ngIf="!rsvp.deleted_at && rsvp.status">
+            <ion-badge class="badge-status" mode="ios">확정</ion-badge>
+          </ng-container>
+        </ion-item>    
+      </ng-container>
+    </ion-list>
+
+    <ion-list mode="ios" class="p-info">
+      <ion-item lines="none" mode="md">
+        <ion-label><p>부킹 내용</p></ion-label>
+        <ion-note slot="end">등록일 {{ info.created_at | date:'M.dd(E)':'+0900':'ko-KR' }}</ion-note>
+      </ion-item>
+      <div class="margin-box">
+        <ion-item lines="none" mode="md">
+          <ion-icon slot="start" name="flag-outline" mode="md"></ion-icon>
+          <ion-label class="ion-text-wrap">{{ info.golf_club_name }}</ion-label>
+        </ion-item>
+        <ion-item lines="none" mode="md">
+          <ion-icon slot="start" name="time-outline" mode="md"></ion-icon>
+          <ion-label class="ion-text-wrap">{{ info.golf_time | date:'M.dd(E) H:mm':'+0900':'ko-KR' }}</ion-label>
+        </ion-item>
+        <ion-item lines="none" mode="md">
+          <ion-label class="icon">￦</ion-label>
+          <ion-label>{{ info.green_fee | number }}원</ion-label>
+        </ion-item>
+        <ion-item lines="none" mode="md">
+          <ion-icon slot="start" name="people-outline" mode="md"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            내장인원 {{ info.booking_people }}인
+            <ng-container *ngIf="info.option?.length">
+              ({{ info.option.join() }})
+            </ng-container>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none" mode="md">
+          <ion-icon slot="start" name="chatbubbles-outline" mode="md"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            {{ info.message }}
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+
+  </ng-container>
+
+</ion-content>
+
+<ng-container *ngIf="info">
+  <ion-footer>
+    <ion-toolbar>
+      <ng-container *ngIf="!is_auth">
+        <ng-container *ngIf="info.rsvp_me.cnt">
+          <ng-container *ngIf="info.rsvp_me.deleted_at">
+            <ion-button expand="block" mode="md" color="medium" disabled>
+              취소
+            </ion-button>
+          </ng-container>
+          <ng-container *ngIf="!info.rsvp_me.deleted_at">
+            <ion-button expand="block" mode="md" color="dark" (click)="canceled(info.rsvp_me)">
+              {{ info.rsvp_me.status ? '멤버' : '조인신청' }} 취소
+            </ion-button>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!info.rsvp_me.cnt">
+          <ng-container *ngIf="info.deleted_at">
+            <ion-button expand="block" mode="md" class="" disabled>
+              종료
+            </ion-button>
+          </ng-container>
+          <ng-container *ngIf="!info.deleted_at">
+            <ion-button expand="block" mode="md" (click)="alertRequest()">
+              신청하기
+            </ion-button>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="is_auth">
+        <ng-container *ngIf="info.deleted_at">
+          <ion-button expand="block" mode="md" disabled>
+            종료
+          </ion-button>
+        </ng-container>
+        <ng-container *ngIf="!info.deleted_at">
+          <ion-button expand="block" mode="md" (click)="finish()">
+            종료
+          </ion-button>
+        </ng-container>
+      </ng-container>
+
+    </ion-toolbar>
+  </ion-footer>
+</ng-container>

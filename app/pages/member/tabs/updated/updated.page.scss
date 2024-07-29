@@ -1,0 +1,39 @@
+.grid-list {
+	position: relative;
+	ul {
+		overflow: hidden;
+		margin: 0;
+		padding: 0;
+		li {
+			position: relative;
+			float: left;
+			width: 33.3%;
+      list-style: none;
+      .thumb {
+        text-align: center;
+        padding: 20px;
+        ion-avatar {
+          width: 100%;
+          height: 100%;
+          margin: 0 auto;
+          img, ion-img {
+            border-radius: 40%;
+          }
+        }
+        ion-img {
+          margin: 0 auto;
+          
+        }
+        ion-label {
+          display: block;
+          height: 20px;
+          margin-top: 10px;
+          font-size: 12px;
+          text-overflow: ellipsis;
+          white-space: nowrap !important;
+          overflow: hidden;
+        }
+      }
+		}
+	}
+}

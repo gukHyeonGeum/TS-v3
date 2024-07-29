@@ -1,0 +1,36 @@
+ion-item {
+  --padding-end: 16px;
+  --min-height: 80px;
+}
+
+ion-label {
+  p {
+    margin-bottom: 6px;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+}
+
+ion-button {
+  font-size: 1em;
+}
+
+.btn-send {
+  margin: 30px -16px 0 0
+}
+
+.timer, .expired {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+.label-stacked {
+  font-size: 18px;
+  color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+}

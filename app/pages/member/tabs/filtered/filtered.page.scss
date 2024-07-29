@@ -1,0 +1,181 @@
+ion-header {
+  padding-left: 12px;
+  padding-right: 12px;
+  .wrap-filter-info {
+    background-color: var(--ion-color-white);
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    .filter-info {
+      flex: 1;
+      display: flex;
+      margin-right: 8px;
+      border-radius: 6px;
+      background-color: #f3f3f3;
+      align-items: center;
+      justify-content: center;
+      .filter-gender {
+        flex: 1;
+        text-align: center;
+        div {
+          font-size: 12px;
+        }
+      }
+      .filter-age {
+        flex: 1;
+        text-align: center;
+        border-left: 1px solid #dbdbdb;
+        border-right: 1px solid #dbdbdb;
+        div {
+          font-size: 12px;
+        }
+      }
+      .filter-distance {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        div {
+          margin-left: 5px;
+          font-size: 12px;
+        }
+      }
+    }
+    ion-button {
+      width: 42px;
+      height: 34px;
+      --color: #cccccc;
+      --border-width: 1px;
+      --border-radius: 6px;
+      --border-color: #cccccc;
+      --background: var(--ion-color-white);
+      --background-activated: #cccccc;
+      --background-activated-opacity: 0.2;
+      ion-icon {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        margin-left: 8px;
+        margin-right: 8px;
+      }
+    }
+  }
+  @media (min-width: 640px) { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .wrap-filter-info {
+      width: 640px;
+    }
+  }
+}
+ion-list {
+  .container {
+    ion-item {
+      display: flex;
+      --inner-padding-start: 18px;
+      --inner-padding-end: 12px;
+      ion-avatar {
+        width: 102px;
+        height: 102px;
+        ion-img {
+          border-radius: 40%;
+        }
+      }
+      .wrap-users-info {
+        flex: 1;
+        margin-left: 19px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        ion-label {
+          font-size: 17px;
+        }
+        .lbl-users-geo-location {
+          .hidden {
+            visibility: hidden;
+          }
+          font-size: 14px;
+          margin-top: 3px;
+          display: flex;
+          align-items: center;
+        }
+        .lbl-users-golf-year {
+          font-size: 13px;
+          margin-top: 4px;
+          color: #8c8c8c;
+        }
+      }
+      .btn-request-friendship {
+        flex-shrink: 0;
+        --box-shadow: none;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 65px;
+        min-height: 32px;
+        &.type0 {
+          border: solid;
+          border-width: 1px;
+          border-color: var(--ion-color-primary);
+        }
+        &.type0:active {
+          background-color: rgba(var(--ion-color-primary-rgb), 0.2);
+        }
+        &.type1 {
+          background-color: #eeeeee;
+        }
+        &.type2 {
+          border: solid;
+          border-width: 1px;
+          border-color: var(--ion-color-primary);
+        }
+        &.type2:active {
+          background-color: rgba(var(--ion-color-primary-rgb), 0.2);
+        }
+        &.type3 {
+          background-color: var(--ion-color-primary);
+        }
+        div {
+          font-size: 13px;
+          margin-top: 7px;
+          margin-bottom: 7px;
+          margin-left: 9px;
+          margin-right: 9px;
+          &.type0 {
+            color: var(--ion-color-primary);
+          }
+          &.type1 {
+            color: black;
+          }
+          &.type2 {
+            color: var(--ion-color-primary);
+          }
+          &.type3 {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  @media (min-width:640px) { 
+    display: flex;
+    justify-content: center;
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      width: 640px;
+      ion-item {
+        width: 100%;
+      }
+    }
+  }
+}
+.lbl-bottom-guide {
+  display: none;
+  text-align: center;
+  width: 100%;
+  margin-top: 25px;
+  margin-bottom: 30px;
+  .lbl-bottom-guide-1 {
+    font-size: 15px;
+  }
+}

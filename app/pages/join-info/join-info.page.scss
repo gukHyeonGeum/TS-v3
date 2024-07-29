@@ -1,0 +1,28 @@
+ion-header {
+  ion-buttons {
+      max-height: 38px;
+  }
+}
+
+ion-button {
+  font-weight: bold;
+  font-size: 1em;
+  &.naver {
+    --background: #4abc23;
+  }
+  &.kakao {
+    --background: #ffdc00;
+    --color: #222222;
+  }
+  &.facebook {
+    --background: #1c6bb4;
+  }
+  &.email {
+    --background: #7e7e7e;
+  }
+  &.apple {
+    text-transform: none;
+    --background: var(--ion-color-light);
+    --color: var(--ion-color-dark);
+  }
+}

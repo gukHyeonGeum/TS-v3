@@ -1,0 +1,33 @@
+<ion-header mode="ios">
+  <ion-toolbar class="ion-no-padding">
+    <div class="lbl-grant-title">티샷 앱 접근 권한 안내</div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    <div class="pnl-grant">
+      <div class="line"></div>
+      <div class="lbl-grant-class">선택 접근 권한</div>
+      <div class="pnl-grant-list">
+        <div class="pnl-grant-item">
+          <ion-icon src="../../../../../../assets/icon/icon_access_location.svg"></ion-icon>
+          <div class=wrap-grant-info>
+            <div class="lbl-grant">위치</div>
+            <div class="lbl-grant-desc">내 위치를 기준으로 근처회원 검색 및 근거리 골프장 검색에 사용합니다</div>
+          </div>
+        </div>
+        <div class="pnl-grant-item">
+          <ion-icon src="../../../../../../assets/icon/icon_access_memory.svg"></ion-icon>
+          <div class=wrap-grant-info>
+            <div class="lbl-grant">저장소</div>
+            <div class="lbl-grant-desc">프로필 사진 업로드에 사용합니다</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pnl-bottom">
+      <div class="lbl-guide">선택 접근 권한은 허용하지 않아도<br>해당 기능 외 서비스 이용이 가능합니다.</div>
+      <div (click)="close()" class="btn-confirm"><div>확인</div></div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,51 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay" swipe-gesture="false">
+      <ion-header mode="ios">
+        <ion-toolbar color="white">
+          <ion-menu-toggle auto-hide="false">
+            <ng-container *ngIf="me">
+              <ion-item mode="md" lines="none">
+                <ion-avatar slot="start" [routerLink]="['/profile']" routerDirection="root" (click)="selectedIndex = 0">
+                  <ion-img [src]="me.profile.thumbnail_image | common: {type: 'profileChange'}" (ionError)="imgError($event)"></ion-img>
+                </ion-avatar>
+                <ion-label class="ion-text-wrap" [routerLink]="['/profile']" routerDirection="root" (click)="selectedIndex = 0">
+                  <h2><strong>{{ me.username }}</strong></h2>
+                </ion-label>
+                <ion-buttons slot="end" mode="md" (click)="selectedIndex = 99">
+                  <ion-button [routerLink]="['/settings']" routerDirection="root">
+                    <ion-icon slot="icon-only" name="settings-sharp"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-item>
+            </ng-container>
+          </ion-menu-toggle>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list mode="ios">
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item (click)="selectedIndex = i" mode="md" [routerDirection]="'root'" [routerLink]="[p.url]" [lines]="p.lines" detail="false" [class.selected]="selectedIndex == i">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                <ng-container *ngIf="p.url === '/payments'; else elseExpire">
+                  <ng-container *ngIf="!me?.expire || !me?.premium_expire; else elseChangeText">
+                    이용권 변경
+                  </ng-container>
+                  <ng-template #elseChangeText>
+                    {{p.title}}
+                  </ng-template>
+                </ng-container>
+                <ng-template #elseExpire>
+                  {{p.title}}
+                </ng-template>
+              </ion-label>
+              <ion-badge color="danger" mode="ios" *ngIf="p.badge">{{p.badge}}</ion-badge>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

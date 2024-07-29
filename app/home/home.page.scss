@@ -1,0 +1,56 @@
+ion-avatar {
+  width: 50px;
+  height: 50px;
+  img, ion-img {
+    border-radius: 40%;
+  }
+}
+
+ion-list {
+  margin-bottom: 10px;
+}
+
+ion-item {
+  --min-height: 56px;
+}
+
+ion-item-divider {
+  border-width: 0;
+}
+
+ion-list-header {
+  ion-label, ion-button {
+    margin: 20px 0;
+  }
+}
+
+ion-label {
+  p {
+    margin: 6px 0;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+}
+
+.label-stacked {
+	font-size: 18px;
+}
+
+.membership-wrap {
+  ion-button {
+    --padding-end: 0;
+  }
+}
+
+.my-email {
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+    font-size: 12px;
+}
+
+.welcome-card img {
+  max-height: 35vh;
+  overflow: hidden;
+}
+
+.btn-my {
+  margin-inline-start: 10px;
+}

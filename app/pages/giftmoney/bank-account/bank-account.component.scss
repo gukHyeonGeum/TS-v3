@@ -1,0 +1,6 @@
+ion-input {
+  border: 1px solid var(--ion-color-light);
+  &:first-child {
+    margin-bottom: 5px;
+  }
+}

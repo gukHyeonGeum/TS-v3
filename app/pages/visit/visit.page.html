@@ -1,0 +1,69 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" *ngIf="!checkbox">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="start" (click)="checkboxToggle()" *ngIf="checkbox">
+      <ion-button>
+        <ion-icon mode="md" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>프로필 방문자</ion-title>
+    <ion-buttons slot="end" (click)="checkboxToggle()" *ngIf="!checkbox">
+      <ion-button>
+        편집
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" (click)="visitDelete()" *ngIf="checkbox">
+      <ion-button>
+        삭제
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list mode="ios">
+    <ng-container *ngFor="let list of lists">
+      <ion-item mode="md" lines="inset" (click)="profile(list)">
+        <ion-avatar slot="start">
+          <ion-img [src]="list.thumbnail_image | common: {type: 'profileChange'}" (ionError)="imgError($event)"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h2><strong>{{ list.username }}</strong></h2>
+          <p>{{ list.gender | gender }} {{ list.dob | age }}</p>
+        </ion-label>
+        <ng-container *ngIf="!checkbox">
+          <div class="date">{{ list.updated_at | date:'M.d H:mm':'+0900' }}</div>
+          <ng-container *ngIf="list.state">
+            <ion-badge color="danger" mode="ios">new</ion-badge>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="checkbox">
+          <ion-checkbox color="primary" slot="end" (ionChange)="selectChecked(list.id, $event)"></ion-checkbox>
+        </ng-container>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+  
+  <ng-container *ngIf="lists && !lists?.length">
+    <ion-text color="medium">
+      <h6 class="ion-text-center">내역이 없습니다.</h6>
+    </ion-text>
+  </ng-container>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

@@ -1,0 +1,60 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+		<ion-buttons slot="start">
+      <ion-back-button defaultHref="/" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>기프트머니 교환 현황</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+	<ion-list>
+		<ng-container *ngFor="let list of lists">
+			<ion-card mode="ios">
+				<ion-item lines="none">
+					<ion-label>
+						{{ list.money | number }}원
+						<p>{{ list.created_at | date:'M.dd(E) H:mm':'+0900':'ko-KR' }}</p>
+					</ion-label>
+					<ng-container *ngIf="list.deleted_at; else wating">
+						<ion-badge color="success" mode="ios">교환 완료</ion-badge>
+					</ng-container>
+					<ng-template #wating>
+						<ion-badge color="primary" mode="ios">진행중</ion-badge>	
+					</ng-template>
+					
+					
+				</ion-item>
+			</ion-card>
+		</ng-container>
+	</ion-list>
+
+	<ng-container *ngIf="lists && !lists?.length">
+    <ion-text color="medium">
+      <h6 class="ion-text-center">진행중인 기프트머니 교환이 없습니다.</h6>
+    </ion-text>
+  </ng-container>
+
+	<div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer mode="ios">
+  <ion-toolbar>
+    <ion-button mode="md" expand="block" fill="clear" color="dark" (click)="exchangeModal()">
+      <ion-label>기프트머니 교환하기</ion-label>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

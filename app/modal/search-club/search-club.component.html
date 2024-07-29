@@ -1,0 +1,46 @@
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="end" mode="md">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>검색</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar placeholder="골프장 이름을 입력하세요" debounce="0" mode="ios" (ionChange)="searchGolf($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list mode="ios">
+    <ion-item lines="full" mode="md" *ngFor="let item of lists" (click)="selected(item)" detail>
+      <ion-label>
+        {{item.name}}
+        <ng-container *ngIf="type=='screen'; else elseStore">
+          <p class="ion-margin-end ion-padding-end ion-text-wrap letter-spacing">
+            <ion-text color="medium">
+              {{ item.address }}
+            </ion-text>
+          </p>
+        </ng-container>
+        <ng-template #elseStore>
+          <ion-text color="medium">
+            ({{item.region}})
+          </ion-text>
+        </ng-template>
+      </ion-label>
+    </ion-item>
+    <div *ngIf="flag" class="ion-text-center ion-padding">검색 결과가 없습니다.</div>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+  

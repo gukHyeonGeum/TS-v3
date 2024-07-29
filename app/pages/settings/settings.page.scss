@@ -1,0 +1,10 @@
+ion-item {
+  --min-height: 56px;
+}
+
+ion-label {
+  p {
+    margin: 6px 0;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+}

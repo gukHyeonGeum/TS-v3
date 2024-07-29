@@ -1,0 +1,76 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>대화 리스트</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list mode="ios">
+    <ng-container *ngFor="let list of lists; let i = index">
+      <ion-item mode="md" lines="inset">
+        <ion-avatar slot="start">
+          <ion-img [src]="list.thumbnail_image | common: {type: 'profileChange'}" (ionError)="imgError($event)" (click)="profile(list.user_id)"></ion-img>
+        </ion-avatar>
+        <ion-label (click)="room(list, i)">
+          <strong>{{ list.name }}</strong>
+          <ng-container *ngIf="me?.expire && list.user_id != 1; then thenTemplate; else elseTemplate"></ng-container>
+          <ng-template #thenTemplate>
+            <p>새 메시지가 있습니다.</p>
+          </ng-template>
+          <ng-template #elseTemplate>
+            <ng-container *ngIf="list.lastmsg.indexOf('teeshot-photo/messages') > 0 || list.lastmsg.indexOf('giphy.com') >= 0; then thenMsg; else elseMsg"></ng-container>
+              <ng-template #thenMsg>
+                <p>사진을 보냈습니다.</p>
+              </ng-template>
+              <ng-template #elseMsg>
+                <ng-container *ngIf="list.lastmsg.indexOf('/emoji/') >= 0; then thenEmoji; else elseText"></ng-container>
+                <ng-template #thenEmoji>
+                  <p>
+                    <ion-thumbnail slot="start">
+                      <img src="assets/emoji/{{list.lastmsg.split('emoji/')[1].replace('original/','')}}" />
+                      <ion-label>이모티콘을 보냈습니다.</ion-label>
+                    </ion-thumbnail>
+                  </p>
+                </ng-template>
+                <ng-template #elseText>
+                  <p [innerHtml]="list.lastmsg" [ngClass]="{'hasBadge': list.unread_cnt}"></p>  
+                </ng-template>
+              </ng-template>
+          </ng-template>
+        </ion-label>
+        <ng-container *ngIf="list.user_id===1; else generalMember">
+          <ion-icon slot="end" name="chatbox-ellipses-outline"></ion-icon>
+        </ng-container>
+        <ng-template #generalMember>
+          <ion-note class="date">{{ list.message_created_at | date:'M.d(E) H:mm':'+0900':'ko-KR'}}</ion-note>
+        </ng-template>
+        <ng-container *ngIf="list.unread_cnt">
+          <ion-badge slot="end" color="danger" mode="ios" [ngClass]="{'adminBadge': list.user_id===1}">{{ list.unread_cnt }}</ion-badge>
+        </ng-container>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ng-container *ngIf="lists && !lists?.length">
+    <ion-text color="medium">
+      <h6 class="ion-text-center">내역이 없습니다.</h6>
+    </ion-text>
+  </ng-container>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

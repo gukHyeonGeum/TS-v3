@@ -1,0 +1,88 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="login" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>가입정보</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="lists">
+    <ion-list mode="md">
+      <ion-list-header>
+        <ion-label><p>아래 가입된 내역으로 로그인하세요.</p></ion-label>
+      </ion-list-header>
+    </ion-list>
+    <ion-list mode="md">
+      <ng-container *ngIf="lists.length">
+        <ng-container *ngFor="let list of lists; let i = index">
+          <ng-container *ngIf="!i">
+            <div class="ion-padding">
+              <ion-button color="dark" size="large" expand="block" [routerLink]="['/phone-login']" [queryParams]="{ phone: list.phone }" routerDirection="forward">
+                휴대폰 번호로 로그인
+              </ion-button>
+              <p class="ion-text-center">{{ list.phone | common: {type: 'phoneNumber'} }}</p>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="list.sns_id && list.provider_type">
+            <div class="ion-padding">
+              <ng-container *ngIf="list.provider_type === 'apple'; else elseSocials">
+                <ng-container *ngIf="showAppleSignIn">
+                  <ion-button class="{{list.provider_type}}" size="large" expand="block" (click)="socialLogin(list.provider_type)">
+                    <ion-icon slot="start" name="logo-apple"></ion-icon>
+                    Sign up with Apple
+                  </ion-button>
+                  <div class="ion-padding-start">
+                    <p>이메일 : {{ list.sns_id }}</p>
+                  </div>
+                </ng-container>
+              </ng-container>
+              <ng-template #elseSocials>
+                <ion-button class="{{list.provider_type}}" size="large" expand="block" (click)="socialLogin(list.provider_type)">
+                  {{list.provider_type | socialName}} 아이디로 로그인  
+                </ion-button>
+                <div class="ion-padding-start">
+                  <div *ngIf="list.provider_type=='naver'; then thenBlock else elseBlock"></div>
+                  <ng-template #thenBlock><p>아이디 : {{ list.sns_id | common: { type: 'emailId' } }}</p></ng-template>
+                  <ng-template #elseBlock><p>이메일 : {{ list.sns_id }}</p></ng-template>
+                  <p>비밀번호 : {{list.provider_type | socialName}} 비밀번호</p>
+                  <!-- {{list.sns_id | changeStar}} -->
+                </div>
+              </ng-template>
+            </div>
+          </ng-container>
+        </ng-container>
+        
+        
+      </ng-container>
+    
+      <ng-container *ngIf="!lists.length">
+        <div class="ion-padding">
+          <ion-button color="dark" size="large" expand="block" [routerLink]="['/phone-login']" routerDirection="forward">
+            휴대폰 번호로 로그인
+          </ion-button>
+        </div>
+        <div class="ion-padding">
+          <ion-button class="naver" size="large" expand="block" (click)="socialLogin('naver')">
+            네이버 아이디로 로그인
+          </ion-button>
+        </div>
+        <div class="ion-padding">
+          <ion-button class="kakao" size="large" expand="block" (click)="socialLogin('kakao')">
+            카카오 아이디로 로그인
+          </ion-button>
+        </div>
+        <ng-container *ngIf="showAppleSignIn">
+          <div class="ion-padding">
+            <ion-button class="apple" size="large" expand="block" (click)="socialLogin('apple')">
+              <ion-icon slot="start" name="logo-apple"></ion-icon>
+              Sign up with Apple
+            </ion-button>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ion-list>
+  </ng-container>
+</ion-content>

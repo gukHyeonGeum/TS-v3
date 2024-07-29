@@ -1,0 +1,15 @@
+<div class="modal-content ion-padding-top ion-padding-bottom">
+  <div class="profile ion-margin-top ion-text-center">
+    <h4><strong>기프트머니 충전</strong></h4>
+    <p>
+       {{ description }}하는 기프트머니가 {{ data.game_fee | number }}원이며,<br />
+       보유하신 기프트머니가 부족합니다.
+    </p>
+    <p>보유 기프트머니 {{ me.money | number }}원</p>
+  </div>
+</div>
+<ion-footer>
+  <ion-button class="ion-no-margin" expand="full" size="large" color="primary" strong (click)="submit()">
+    기프트머니 충전하기
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,56 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/payments" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>구매내역</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list mode="ios">
+    <ng-container *ngFor="let list of lists">
+      <ion-item lines="full" mode="md" detail (click)="viewModal(list.id)">
+        <ion-label>
+          {{ list.item_name }}
+          <p>결제일시: {{ list.created_at | date:'yyyy-MM-dd HH:mm':'+0900' }}</p>
+        </ion-label>
+        <ng-container *ngIf="list.item_code.indexOf('n') !== -1 || list.item_code.indexOf('p') !== -1">
+          <ion-note slot="end">
+            <ng-container *ngIf="!list.canceled_at">
+              <ng-container *ngIf="(list.ended_at | betweenday:'day') >= 0">
+                <strong>이용중</strong>
+              </ng-container>
+              <ng-container *ngIf="(list.ended_at | betweenday:'day') < 0">
+                기간만료
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="list.canceled_at">
+              <ng-container *ngIf="list.deleted_at">취소완료</ng-container>
+              <ng-container *ngIf="!list.deleted_at">취소대기</ng-container>
+            </ng-container>
+          </ion-note>
+        </ng-container>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ng-container *ngIf="lists && !lists.length">
+    <h5 class="ion-text-center">구매내역이 없습니다.</h5>
+  </ng-container>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

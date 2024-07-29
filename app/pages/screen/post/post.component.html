@@ -1,0 +1,118 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>초대장 작성</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="none" class="ion-text-center">
+    <ion-label><h5>근처 회원들에게 초대장을 보내드립니다.</h5></ion-label>
+  </ion-item>
+  <form [formGroup]="screenForm" novalidate>
+    <ion-item lines="{{form.golf_address?'none':'inset'}}" mode="md" (click)="searchScreen()">
+      <ion-label class="label-max-width">스크린</ion-label>
+      <ion-label class="ion-text-wrap ion-text-right"><p>{{ form.golf_store_name }}</p></ion-label>
+    </ion-item>
+    <ng-container *ngIf="form.golf_address || form.golf_tel">
+      <ion-item lines="inset" mode="md">
+        <div class="screen-info">
+          <p class="letter-spacing">{{ form.golf_address }}</p>
+          <p>{{ form.golf_tel }}</p>
+        </div>
+      </ion-item>
+    </ng-container>
+    <ion-item lines="inset" mode="md">
+      <ion-label>날짜</ion-label>
+      <ion-datetime formControlName="golf_date" placeholder="선택하세요" display-format="YYYY-MM-DD" min="{{ nextDay | date:'yyyy-MM-dd':'+0900':'ko-KR' }}" max="{{nowYear.getFullYear()+2}}" cancelText="취소" doneText="확인"></ion-datetime>
+    </ion-item>
+    <ion-item lines="inset" mode="md">
+      <ion-label>시간</ion-label>
+      <ion-datetime formControlName="golf_dateTime" placeholder="선택하세요" display-format="HH:mm" minute-values="0,10,20,30,40,50" cancelText="취소" doneText="확인"></ion-datetime>
+    </ion-item>
+    <ion-item lines="inset" mode="md">
+      <ion-label>초청인원</ion-label>
+      <ion-select interface="popover" formControlName="golf_partner" cancelText="닫기" okText="확인" placeholder="선택하세요">
+        <ion-select-option [value]=1>남 1명</ion-select-option>
+        <ion-select-option [value]=2>여 1명</ion-select-option>
+        <ion-select-option [value]=3>무관 1명</ion-select-option>
+        <ion-select-option [value]=4>남 2명</ion-select-option>
+        <ion-select-option [value]=5>여 2명</ion-select-option>
+        <ion-select-option [value]=6>무관 2명</ion-select-option>
+        <ion-select-option [value]=7>커플</ion-select-option>
+        <ion-select-option [value]=8>부부</ion-select-option>
+        <ion-select-option [value]=9>3명 이상</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item lines="inset" mode="md">
+      <ion-label>스크린 이용료 부담</ion-label>
+      <ion-select interface="action-sheet" formControlName="golf_sponsor" cancelText="닫기" okText="확인" placeholder="선택하세요">
+        <ion-select-option [value]=1>이용료 초청자 부담</ion-select-option>
+        <ion-select-option [value]=2>이용료 신청자 부담</ion-select-option>
+        <ion-select-option [value]=3>이용료 1/N</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item lines="none" mode="md">
+      <ion-label>초대 태그(선택)</ion-label>
+    </ion-item>
+    <div class="tag-field">
+      <ng-container *ngFor="let tag of tagArray">
+        <ion-chip color="{{ (tags | common: { type: 'screenTagSelect', data: tag }) >= 0? 'dark':'medium'}}" class="tags" (click)="selectTag(tag, $event)">
+          {{tag}}
+        </ion-chip>
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="!id && info; else postMode">
+      <ion-item lines="inset" mode="md">
+        <ion-label>기프트머니 {{ info.gender == 'male' ? '선물' : '희망' }}</ion-label>
+        <ion-label class="ion-text-right">￦{{ screenForm.value['game_fee'] | number }}</ion-label>
+      </ion-item>
+      <ion-text color="danger" class="ion-text-center">
+        <h6>기프트머니는 수정할 수 없습니다.</h6>
+      </ion-text>
+    </ng-container>
+    <ng-template #postMode>
+      <ion-item lines="none" mode="md">
+        <ion-label class="giftMoney-title">
+          기프트머니 {{ me?.profile.gender == 'male' ? '선물' : '희망' }}
+        </ion-label>
+        <ion-icon (click)="helpAlert()" color="danger" name="help-circle" mode="ios"></ion-icon>
+        <ion-label class="ion-text-right">보유 : {{ me?.money | number }}원</ion-label>
+      </ion-item>
+      <ion-item lines="none" mode="md" class="ion-text-center">
+        <ion-label class="ion-text-wrap">
+          <p *ngIf="me?.profile?.gender == 'male'">매칭된 신청자에게 선물하는 기프트머니</p>
+          <p *ngIf="me?.profile?.gender == 'female'">매칭된 친구에게 {{ me?.profile.gender == 'male' ? '선물하는' : '받기 원하는' }} 기프트머니 설정하기</p>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item lines="none" mode="md" class="ion-margin-top">
+        <ion-label class="ion-text-right">{{ screenForm.value['game_fee'] | number }}</ion-label>
+        <ion-buttons slot="end">
+          <ion-button (click)="plus()" color="medium" slot="end" fill="outline">
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+          <ion-button (click)="minus()" color="medium" slot="end" fill="outline">
+            <ion-icon slot="icon-only" name="remove"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ng-template>  
+    
+  </form>
+</ion-content>
+
+<ion-footer mode="ios">
+  <ion-toolbar>
+      <ion-button (click)="confirm()" color="dark" size="small" expand="full" fill="clear" [disabled]="!screenForm.valid">
+        <h6>{{ btnTitle }}</h6>
+      </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<div class="backdrop" [ngClass]="{'show': backdropShow, 'hide': !backdropShow}"></div>

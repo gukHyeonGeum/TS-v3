@@ -1,0 +1,25 @@
+ion-item-divider {
+  border-width: 0;
+}
+
+ion-list-header {
+  h5 {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+}
+
+ion-item {
+  --min-height: 56px;
+}
+
+ion-label {
+  p {
+    margin: 6px 0;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+}
+
+.label-stacked {
+	font-size: 18px;
+}

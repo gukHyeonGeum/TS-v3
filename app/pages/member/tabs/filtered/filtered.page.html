@@ -1,0 +1,68 @@
+<ion-header mode="ios" class="ion-no-border">
+  <div class="wrap-filter-info">
+    <div class="filter-info">
+      <div class="filter-gender"><div>성별 {{obj.sex == 'female' ? '여성' : (obj.sex == 'male' ? '남성' : '무관')}}</div></div>
+      <div class="filter-age">
+        <div>나이&nbsp;{{obj.filter_s_age}}~{{obj.filter_e_age}}{{obj.filter_e_age == 60 ? '이상' : ''}}</div>
+      </div>
+      <div class="filter-distance">
+        <ion-icon src="../../../../../assets/icon/icon-search-location.svg"></ion-icon>
+        <div>{{obj.locations == 0 ? '무관' : obj.locations + 'km'}}</div>
+      </div>
+    </div>
+    <ion-button (click)="filter()" size="undefined" class="ion-no-padding ion-no-margin" fill="outline">
+      <ion-icon src="../../../../../assets/icon/icon-btn-filter.svg"></ion-icon>
+    </ion-button>
+  </div>
+</ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list mode="ios">
+    <div class="container">
+      <ng-container *ngFor="let list of lists; let i = index">
+        <ion-item lines="none" class="ion-no-padding" mode="md">
+          <ion-avatar (click)="profile(list.user_id)">
+            <ion-img [src]="list.thumbnail_image.replace('thumb','medium') | common: {type: 'profileChange'}" (ionError)="imgError($event)"></ion-img>
+          </ion-avatar>
+          <div class="wrap-users-info" (click)="profile(list.user_id)">
+            <ion-label>
+              <strong>{{list.username}}</strong>
+            </ion-label>
+            <div class="lbl-users-geo-location">
+              <ion-icon class="{{list.geo_location ? '' : 'hidden'}}" src="../../../../../assets/icon/icon-location-list.svg"></ion-icon>
+              {{list.geo_location}}
+            </div>
+            <div class="lbl-users-golf-year">
+              골프 경력 
+              {{
+                list.golf_year == 1 ? '1년 이하' :
+                (list.golf_year == 2 ? '2-3년' : 
+                (list.golf_year == 3 ? '4-5년' : 
+                (list.golf_year == 4 ? '6-7년' : 
+                (list.golf_year == 5 ? '8-9년' : 
+                '10년 이상'))))
+              }}
+            </div>
+          </div>
+          <div class="btn-request-friendship {{'type' + list.is_friend}}" (click)="requestFriendship(i, list.is_friend)">
+            <div class="{{'type' + list.is_friend}}">
+              {{
+                list.is_friend == 1 ? '대기중' :
+                (list.is_friend == 2 ? '친구수락' :
+                (list.is_friend == 3 ? '친구' : '친구요청'))
+              }}
+            </div>
+          </div>
+        </ion-item>
+      </ng-container>
+    </div>
+  </ion-list>
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+  <div #lblBottomGuide class="lbl-bottom-guide">
+    <div class="lbl-bottom-guide-1">
+      더 이상 검색결과가 없습니다.
+    </div>
+  </div>
+</ion-content>

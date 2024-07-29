@@ -1,0 +1,32 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>상세보기</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+	<ion-list mode="ios">
+		<div class="grid-list">
+			<ul>
+        <ng-container *ngFor="let list of lists">
+          <li>
+            <div class="thumb" (click)="profile(list.id)">
+              <ion-avatar>
+                <ion-img [src]="list.thumbnail_image.replace('thumb','medium') | common: {type: 'profileChange'}" (ionError)="imgError($event)"></ion-img>
+              </ion-avatar>
+              <ion-label>{{ list.username }}</ion-label>
+            </div>
+          </li>
+        </ng-container>
+			</ul>
+		</div>
+    <p class="ion-text-center">[200명까지로 제한됩니다]</p>
+  </ion-list>
+
+</ion-content>

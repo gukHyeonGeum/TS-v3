@@ -1,0 +1,63 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="end" mode="md">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar color="white" mode="md">
+	  <ion-segment [(ngModel)]="whichPage" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="invite">
+        <ion-label>등록</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="request">
+        <ion-label>신청</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container [ngSwitch]="whichPage">
+
+    <ng-container *ngSwitchCase="'invite'">
+      <ion-list mode="ios" *ngFor="let list of lists">
+        <ion-item [ngClass]="{'end': list.deleted_at}" mode="md" lines="full" [routerLink]="['/golfjoin/view', list.id]" routerDirection="forward">
+          <ion-thumbnail slot="start">
+            <ion-img [src]="imgSrc(list.thumbnail_image)" (ionError)="imgError($event)"></ion-img>
+          </ion-thumbnail>
+          <ion-label>
+            <h2><strong>{{list.golf_club_name}}</strong></h2>
+            <p>{{ list.golf_time | date:'M.d(E) H:mm':'+0900':'ko-KR' }}</p>
+          </ion-label>
+          <ion-label class="ion-text-right">
+            <h3>{{ list.golf_partner | filters : 'golf_join_partner' }}</h3>
+            <div *ngIf="!list.deleted_at; then price; else end"></div>
+            <ng-template #price><p>{{ list.green_fee | number }}</p></ng-template>
+            <ng-template #end><p><ion-badge color="medium" mode="ios">마감</ion-badge></p></ng-template>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'request'">
+      request
+    </ng-container>
+    
+  </ng-container>
+  
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

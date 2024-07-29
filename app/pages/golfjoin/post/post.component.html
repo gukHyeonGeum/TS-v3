@@ -1,0 +1,108 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>조인 등록</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light" drag-content="false">
+
+
+
+  <form [formGroup]="golfjoinForm" novalidate>
+    <ion-input type="hidden" formControlName="club_region"></ion-input>
+    <ion-input type="hidden" formControlName="club_name"></ion-input>
+
+    <ion-list mode="ios" class="post-info">
+      <div class="top-notice">
+        골프조인은 같이 골프를 즐길 멤버가 부족할때<br />
+        함께 필드에서 골프를 즐길 멤버를 모집하는 서비스 입니다.<br />
+        비용은 각자부담이 기본이나 협의를 통해서 조정 가능합니다.
+      </div>
+      <ion-item lines="inset" mode="md" (click)="searchGolf()">
+        <ion-label><ion-icon name="checkmark" color="danger"></ion-icon> 골프장</ion-label>
+        <ion-input type="text" class="ion-text-right" value="{{form.club_name}}" placeholder="검색하세요" readonly></ion-input>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label><ion-icon name="checkmark" color="danger"></ion-icon> 날짜</ion-label>
+        <ion-datetime formControlName="bookingDate" placeholder="선택하세요" display-format="YYYY-MM-DD" min="{{ nextDay | date:'yyyy-MM-dd':'+0900':'ko-KR' }}" max="{{nowYear.getFullYear()+2}}" cancelText="취소" doneText="확인"></ion-datetime>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label><ion-icon name="checkmark" color="danger"></ion-icon> 시간</ion-label>
+        <ion-datetime formControlName="bookingDateTime" placeholder="선택하세요" display-format="HH:mm" cancelText="취소" doneText="확인"></ion-datetime>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label><ion-icon name="checkmark" color="danger"></ion-icon> 그린피</ion-label>
+        <ion-input type="number" formControlName="green_fee" placeholder="(예:100000)" class="ion-text-right"></ion-input>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label><ion-icon name="checkmark" color="danger"></ion-icon> 등록자 인원</ion-label>
+        <ion-select formControlName="companion" cancelText="취소" okText="확인" placeholder="선택하세요">
+          <ion-select-option value="1">등록자</ion-select-option>
+          <ion-select-option value="2">등록자, 남1명</ion-select-option>
+          <ion-select-option value="3">등록자, 남2명</ion-select-option>
+          <ion-select-option value="4">등록자, 여1명</ion-select-option>
+          <ion-select-option value="5">등록자, 여2명</ion-select-option>
+          <ion-select-option value="6">등록자, 남1여1</ion-select-option>
+          <ion-select-option value="8">부부&커플</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label><ion-icon name="checkmark" color="danger"></ion-icon> 조인요청 인원</ion-label>
+        <ion-select formControlName="partners" cancelText="취소" okText="확인" placeholder="선택하세요">
+          <ion-select-option value="1">조인 1명</ion-select-option>
+          <ion-select-option value="2">조인 2명</ion-select-option>
+          <ion-select-option value="3">조인 3명</ion-select-option>
+          <ion-select-option value="10">부부&커플</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label>
+          <h2 class="ion-padding-bottom"><ion-icon name="checkmark" color="danger"></ion-icon> 내장인원</h2>
+          <ion-segment mode="ios" (ionChange)="bookingPeople($event)" [value]="golfjoinForm.value['bookingPeople']" scrollable>
+            <ion-segment-button value="4" mode="ios">
+              <ion-label>4인필수</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="3" mode="ios">
+              <ion-label>3인이상</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="2" mode="ios">
+              <ion-label>2인이상</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label >기타옵션</ion-label>
+        <ion-select formControlName="option" class="sel-multi" multiple="true" cancelText="취소" okText="확인" placeholder="선택하세요">
+          <ion-select-option value="1">카트포함</ion-select-option>
+          <ion-select-option value="2">식사포함</ion-select-option>
+          <ion-select-option value="4">노캐디</ion-select-option>
+        </ion-select>
+      </ion-item>    
+      <ion-item lines="none" mode="md">
+        <ion-label>추가내용</ion-label>
+        <ion-note slot="end">* 광고 입력시 삭제</ion-note>
+      </ion-item>
+      <ion-item mode="md" lines="full">
+        <ion-textarea formControlName="message" rows="5" placeholder="전하고 싶은 내용을 입력하세요"></ion-textarea>
+      </ion-item>    
+    </ion-list>
+
+  </form>
+
+</ion-content>
+
+<ion-footer>
+  <div class="footer-notice">
+    추가 내용에 개인 정보, 광고, 미풍양속을 저해하는 내용이 포함된 경우<br />
+    골프조인 등록이 취소되거나 추가 내용이 삭제될 수 있습니다.
+  </div>
+  <ion-button expand="full" size="large" class="ion-no-margin" (click)="create()" [disabled]="!golfjoinForm.valid">
+    등록하기
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,163 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/screen" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>초대장</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="info">
+    <ion-card mode="ios">
+      <ion-card-header class="ion-text-center">
+        <ion-avatar>
+          <img [src]="info.thumbnail_image" (ionError)="imgError($event)" (click)="profile(info)" />
+        </ion-avatar>
+        <h6><strong>{{ info.poster }}</strong></h6>
+        <p class="line-bottom">회원님을 파트너로 초대합니다.</p>
+        <ng-container *ngIf="is_auth && !info.deleted_at">
+          <ion-button class="btn-more" size="small" fill="clear" color="medium" (click)="more()">
+            <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+          </ion-button>
+        </ng-container>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none" mode="md">
+          <ion-icon slot="start" name="golf-outline" mode="md"></ion-icon>
+          <ion-label (click)="store()" class="ion-text-wrap">
+            <ion-text color="primary">
+              <h2><u>{{ info.golf_store_name }}</u></h2>
+            </ion-text>
+            <p class="letter-spacing">{{ info.address }} <br />{{ info.store_phone }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none" mode="md">
+          <ion-icon slot="start" name="time-outline" mode="md"></ion-icon>
+          <ion-label class="ion-text-wrap">{{ info.golf_time | date:'M.dd(E) H:mm':'+0900':'ko-KR' }}</ion-label>
+        </ion-item>
+        <ion-item lines="none" mode="md">
+          <ion-icon slot="start" name="person-outline" mode="md"></ion-icon>
+          <ion-label class="ion-text-wrap">{{ info.golf_partner | filters: 'screen_golf_partner' }}</ion-label>
+        </ion-item>
+        <ng-container *ngIf="info.golf_sponsor">
+          <ion-item lines="none" mode="md">
+            <ion-icon slot="start" name="person-outline" mode="md"></ion-icon>
+            <ion-label class="ion-text-wrap">{{ info.golf_sponsor | filters: 'screen_golf_sponsor' }}</ion-label>
+          </ion-item>
+        </ng-container>
+        <div class="ion-margin-top">
+          <ng-container *ngFor="let tag of info.message">
+            <ion-chip color="dark">
+              <ion-label>{{ tag }}</ion-label>
+            </ion-chip>
+          </ng-container>
+        </div>
+        <ion-item lines="none" class="ion-margin-top">
+          <ion-label class="ion-text-wrap giftMoney-title">기프트머니 {{ info.gender == 'male' ? '선물' : '희망' }}</ion-label>
+          <ion-icon (click)="helpAlert()" color="danger" name="help-circle" mode="ios"></ion-icon>
+          <ion-label class="ion-text-wrap ion-text-right">￦{{ info.game_fee | number }}</ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+    
+    <ion-item mode="md" lines="none">
+      <ion-label>
+        신청자
+        <ion-text color="medium">
+          (비공개)
+        </ion-text>
+      </ion-label>
+      {{ info.rsvp_list.length }}명
+    </ion-item>
+    
+    <ng-container *ngIf="info.rsvp_list.length; else noApply">
+        <ion-list mode="ios">
+          <ng-container *ngFor="let rsvp of info.rsvp_list">
+            <ion-item mode="md" lines="none">
+              <ion-avatar slot="start">
+                <ng-container *ngIf="!rsvp.deleted_at && (is_auth || me.id == rsvp.poster_id); else elseThumbnail">
+                  <img [src]="rsvp.thumbnail_image" (ionError)="imgError($event)" (click)="profile(rsvp)" />  
+                </ng-container>
+                <ng-template #elseThumbnail>
+                  <img [src]="images" />
+                </ng-template>
+              </ion-avatar>
+              <ion-label>
+                <ng-container *ngIf="!rsvp.deleted_at && (is_auth || me.id == rsvp.poster_id); else elseProfile">
+                  <strong>{{ rsvp.poster }}</strong>
+                </ng-container>
+                <ng-template #elseProfile>
+                  <strong>ㅇㅇㅇ</strong>
+                </ng-template>
+                <p class="letter-spacing ion-text-wrap">{{ rsvp.gender | gender }} | {{ rsvp.geo_location }} | {{ rsvp.dob | age }}세</p>
+               
+              </ion-label>
+              <ng-container *ngIf="(is_auth || rsvp.poster_id===me.id) && rsvp.status===1; else elseStatus">
+                <ion-buttons slot="end">
+                  <ion-button (click)="invitation(rsvp)" class="btn-light-border" color="light" expand="block" fill="solid">
+                    매칭
+                  </ion-button>
+                  <ng-container *ngIf="is_auth">
+                    <ion-button href="tel:{{ rsvp?.phone }}">
+                      <ion-icon slot="icon-only" name="call" color="medium"></ion-icon>
+                    </ion-button>
+                  </ng-container>
+                </ion-buttons>
+              </ng-container>
+              <ng-template #elseStatus>
+                <ng-container *ngIf="is_auth; else elseAuth">
+                  <ng-container *ngIf="rsvp.deleted_at; else notRsvpDeleted">
+                    <ion-badge color="medium" mode="ios">취소</ion-badge>
+                  </ng-container>
+                  <ng-template #notRsvpDeleted>
+                    <ng-container *ngIf="!info.deleted_at && (info.golf_time | betweenday: 'day') >= 0">
+                      <ion-button (click)="matching(rsvp)" color="dark" expand="block" fill="outline" size="default">
+                        매칭하기
+                      </ion-button>
+                    </ng-container>  
+                  </ng-template>
+                </ng-container>
+                <ng-template #elseAuth>
+                  <ng-container *ngIf="me.id===rsvp.poster_id; else notMe">
+                    <ion-button size="small" fill="clear" color="medium" (click)="rsvp_more(rsvp)">
+                      <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+                    </ion-button>
+                  </ng-container>
+                  <ng-template #notMe>
+                    <ng-container *ngIf="rsvp.status===1">
+                      <ion-badge color="success" mode="ios">매칭완료</ion-badge>
+                    </ng-container>
+                  </ng-template>
+                </ng-template>
+              </ng-template>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+    </ng-container>
+    <ng-template #noApply>
+      <ion-item mode="md" lines="none" class="ion-margin-top">
+        <ion-label>
+          <p class="ion-text-center">
+            신청내용과 프로필은 초청자외에는<br />
+            비공개로 진행되니 안심하세요.
+          </p>
+        </ion-label>
+      </ion-item>
+    </ng-template>
+
+  </ng-container>
+  
+</ion-content>
+
+<ng-container *ngIf="info && !is_auth">
+  <ng-container *ngIf="!info?.rsvp_me.cnt">
+    <ion-footer mode="md">
+      <ion-toolbar>
+        <ion-button (click)="requestCheck()" size="large" expand="full" class="ion-no-margin">
+          신청하기
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-container>
+</ng-container>

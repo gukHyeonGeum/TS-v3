@@ -1,0 +1,51 @@
+<ion-header mode="ios">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start" mode="md">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" mode="md" *ngIf="user">
+      <ion-button>
+        {{ slideIndex }} / {{user.pictures?.length}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark">
+
+	<ng-container *ngIf="user">
+	
+		<div class="typical" *ngIf="user?.profile.thumbnail_image == imageUrl + '/' + selected_pic?.id + '/thumb/' + selected_pic?.image_file_name">대표사진</div>
+
+		<ion-slides pager="false" scrollbar="true" [options]="sliderOpts" (ionSlideTransitionEnd)="change()">
+			<ion-slide *ngFor="let pic of user?.pictures" id="{{pic.id}}">
+				<img src="{{ imageUrl + '/' + pic.id + '/original/' + pic.image_file_name }}" class="swiper-zoom-container" />
+				<input type="hidden" name="id[{{pic.id}}]" value="{{pic.id}}" #slider>
+			</ion-slide>
+		</ion-slides>
+
+	</ng-container>
+
+  <div *ngIf="image">
+		<ion-slides pager="false" scrollbar="true" [options]="sliderOpts" #slider>
+	    <ion-slide>
+				<img src="{{ image.replace('thumb','original') }}" class="swiper-zoom-container" />
+	    </ion-slide>
+	  </ion-slides>
+  </div>
+</ion-content>
+
+<ion-footer *ngIf="me?.id==user?.id">
+	<ion-toolbar color="dark">
+		<div class="image-b-icon btn-camera" (click)="attach()">
+  		<ion-icon slot="icon-only" name="camera-outline"></ion-icon>
+	  	사진올리기
+	  </div>
+	  <div class="image-b-icon btn-more" (click)="thumbHold(slideIndex)">
+  		<ion-icon slot="icon-only" name="ellipsis-horizontal-outline" mode="ios"></ion-icon>
+  		더보기
+	  </div>
+	</ion-toolbar>
+</ion-footer>

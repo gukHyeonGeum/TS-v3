@@ -1,0 +1,15 @@
+ion-footer {
+  ion-toolbar {
+    h6 {
+      margin-top: 10px;
+    }
+  }
+}
+
+ion-card {
+  --background: rgba(var(--ion-color-medium-rgb), 0.5);
+}
+
+.line-top {
+  border-top: 1px solid rgba(var(--ion-color-medium-rgb), 0.5);
+}

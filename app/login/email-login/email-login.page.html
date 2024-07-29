@@ -1,0 +1,43 @@
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="login" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>이메일 로그인</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="findPassForm" novalidate>
+    <ion-list mode="md">
+      <ion-list-header>
+        <ion-label><p>기존 이메일 가입자만 로그인 가능합니다.</p></ion-label>
+      </ion-list-header>
+    </ion-list>
+    <ion-list mode="md">
+      <ion-item lines="inset" mode="md">
+        <ion-label position="stacked" mode="md">이메일</ion-label>
+        <ion-input type="email" formControlName="email" placeholder="teeshot@teeshot.co.kr"></ion-input>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label position="stacked" mode="md">비밀번호</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-list mode="md">
+      <div class="ion-padding">
+        <ion-button mode="md" color="primary" expand="block" size="large" (click)="emailLogin()" [disabled]="!findPassForm.valid">
+          로그인
+        </ion-button>
+        <ion-item mode="md" lines="none" class="ion-text-center">
+          <ion-label><p><a [routerLink]="[ '/find-email' ]"><u>이메일 찾기</u></a></p></ion-label>
+          <ion-label><p><a [routerLink]="[ '/find-pass' ]"><u>비밀번호 찾기</u></a></p></ion-label>
+        </ion-item>
+      </div>
+      
+    </ion-list>
+  </form>
+
+</ion-content>

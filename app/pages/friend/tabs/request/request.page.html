@@ -1,0 +1,42 @@
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list mode="ios">
+    <ng-container *ngFor="let list of lists; let i = index">
+      <ion-item mode="md" lines="inset">
+        <ion-avatar slot="start">
+          <ion-img [src]="list.thumbnail_image | common: {type: 'profileChange'}" (ionError)="imgError($event)" (click)="profile(list.id)"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h2><strong>{{ list.username }}</strong></h2>
+          <ion-button mode="md" color="primary" (click)="accept(list.id, i)">
+            수락
+          </ion-button>
+          <ion-button mode="md" color="light" (click)="delete(list.id, i)">
+            삭제
+          </ion-button>
+        </ion-label>
+        <div class="date">{{ list.updated_at | date:'M.d H:mm':'+0900' }}</div>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ng-container *ngIf="lists && !lists?.length">
+    <ion-text color="medium">
+      <h6 class="ion-text-center">내역이 없습니다.</h6>
+    </ion-text>
+  </ng-container>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

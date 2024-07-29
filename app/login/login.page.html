@@ -1,0 +1,31 @@
+<ion-content>
+
+  <div class="wrap">
+    <div class="background-wrap">
+      <div class="background"></div>
+    </div>
+    <div class="login-wrap">
+      <ion-button class="phone ion-no-margin" mode="md" size="large" expand="block" strong (click)="memberLogin()">
+        <ion-icon src="../../assets/icon/icon-login-phone.svg"></ion-icon>
+        <span>휴대폰 번호로 로그인</span>
+      </ion-button>
+      <div class="login-text">
+        소셜 가입 회원 또는 신규가입
+      </div>
+      <ng-container *ngIf="showAppleSignIn">
+        <ion-button class="apple ion-no-margin" size="large" expand="block" mode="md" (click)="socialLogin('apple')">
+          <ion-icon src="../../assets/icon/icon-login-apple-white.svg"></ion-icon>
+          <span>Apple로 가입하기</span>
+        </ion-button>
+      </ng-container>
+      <ion-button class="kakao ion-no-margin" size="large" expand="block" mode="md" (click)="socialLogin('kakaoSync')">
+        <ion-icon src="../../assets/icon/icon-login-kakao.svg"></ion-icon>
+        <span>카카오로 가입하기</span>
+      </ion-button>
+      <ion-button class="naver ion-no-margin" size="large" expand="block" mode="md" (click)="joinCheck('naver')">
+        <ion-icon src="../../assets/icon/icon-login-naver.svg"></ion-icon>
+        <span>네이버로 가입하기</span>
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

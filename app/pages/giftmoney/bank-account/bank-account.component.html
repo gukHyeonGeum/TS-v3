@@ -1,0 +1,40 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>계좌 설정</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <form [formGroup]="bankForm" novalidate>
+    <ion-input type="hidden" formControlName="accountBank"></ion-input>
+    <ion-list mode="md" class="ion-padding">
+      <ion-input type="number" inputmode="numeric" formControlName="accountNumber" placeholder="계좌번호"></ion-input>
+      <ion-input type="text" formControlName="accountName" placeholder="예금주명"></ion-input>
+      <ion-grid fixed>
+        <ion-row>
+          <ng-container *ngFor="let bank of bankList">
+            <ion-col size="6">
+              <ion-button (click)="selected(bank)" color="medium" expand="block" [fill]="bankForm.value['accountBank'] === bank ? 'solid' : 'outline'">
+                {{ bank }}
+              </ion-button>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+
+  </form>
+
+</ion-content>
+<ion-footer mode="ios">
+  <ion-toolbar>
+    <ion-button (click)="submit()" mode="md" color="dark" expand="block" fill="clear" [disabled]="!bankForm.valid">
+      완료
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

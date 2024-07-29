@@ -1,0 +1,67 @@
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-title>기프트머니 충전</ion-title>
+    <ion-buttons slot="end" mode="md">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card mode="ios">
+      <ion-item mode="md" lines="none" color="light">
+        <ion-label>기프트머니 보유</ion-label>
+        <ion-label class="ion-text-right"><strong>{{ me?.money | number }}</strong> 원</ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none" color="light">
+        <ion-label>기프트머니 선물</ion-label>
+        <ion-label class="ion-text-right"><strong>{{ giftmoney | number }}</strong> 원</ion-label>
+      </ion-item>
+    </ion-card>
+    
+    <ion-item mode="md" lines="none">
+      <ion-label>기프트 머니</ion-label>
+    </ion-item>
+    <ion-grid fixed>
+      <ion-row>
+        <ng-container *ngFor="let payMoney of payMoneys">
+          <ion-col size="4">
+            <ion-button (click)="money(payMoney, $event)" color="medium" expand="block" [fill]="selectMoney === payMoney.money ? 'solid' : 'outline'">
+              {{ payMoney.title }}
+            </ion-button>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid fixed class="ion-margin-top ion-padding-top line-top">
+      <ion-row>
+        <ion-col size="4">
+          <ion-button (click)="paymentType('CN')" color="medium" expand="block" [fill]="selectType === 'CN' ? 'solid' : 'outline'">
+            신용카드
+          </ion-button>
+        </ion-col>
+        <ion-col size="4">
+          <ion-button (click)="paymentType('RA')" color="medium" expand="block" [fill]="selectType === 'RA' ? 'solid' : 'outline'">
+            계좌이체
+          </ion-button>
+        </ion-col>
+        <ion-col size="4">
+          <ion-button (click)="paymentType('MC')" color="medium" expand="block" [fill]="selectType === 'MC' ? 'solid' : 'outline'">
+            휴대폰
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+</ion-content>
+<ion-footer mode="ios">
+  <ion-toolbar>
+      <ion-button (click)="payment()" color="dark" size="small" expand="full" fill="clear">
+        <h6>다음</h6>
+      </ion-button>
+  </ion-toolbar>
+</ion-footer>

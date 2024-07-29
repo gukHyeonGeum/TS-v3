@@ -1,0 +1,17 @@
+ion-item {
+  ion-label {
+    h2 {
+      font-size: 20px;
+    }
+  }
+}
+
+ion-footer {
+  ion-toolbar {
+    --background: var(--ion-color-white);
+    ion-button {
+      margin: 10px;
+      --background: var(--ion-color-primary);
+    }
+  }
+}

@@ -1,0 +1,177 @@
+<ion-content>
+
+  <ng-container *ngIf="user">
+  
+    <div class="profile-wrap">
+
+      <div class="thumb-field">
+        <ion-slides [options]="{ effect: 'flip', speed: 100 }" (ionSlideTransitionEnd)="change()">
+          <ion-slide *ngFor="let pic of user.pictures; let i = index">
+            <img src="{{thumb(pic)}}" [ngStyle]="profile_img" (click)="imageView(user.id, i)" />
+          </ion-slide>
+        </ion-slides>
+        <div class="img-over"></div>
+      </div>
+      
+      <div class="none-profile-img" *ngIf="!user.pictures.length">
+        <img [src]="images" [ngStyle]="profile_img" />
+      </div>
+
+      <ion-list mode="ios" class="user-info">
+        <ion-list-header>
+          <ion-label>{{ user.username }}</ion-label>
+          <ion-badge slot="end" color="primary">방문자 {{ user.view_count }}</ion-badge>
+        </ion-list-header>
+        <ion-item lines="none" mode="md" class="option-text">
+          <ion-label>{{ user.profile.phone ? (user.profile.gender | gender) : '-' }} {{ user.profile.dob | age }}, {{ user.profile.geo_location }}</ion-label>
+        </ion-item>
+        <ion-badge color="primary" class="badge-visit">
+          <span class="ion-float-left">방문자</span>
+          <span class="ion-float-right">{{ user.profile.view_count }}명</span>
+        </ion-badge>
+        <ion-badge color="light" class="badge-like">
+          <span class="ion-float-left">좋아요</span>
+          <span class="ion-float-right">{{ user.profile.like_count }}개</span>
+        </ion-badge>
+      </ion-list>
+
+      <ng-container *ngIf="me.level === 10">
+        <ion-item lines="none">
+          <ng-container *ngIf="user.deleted_at && user.level === -1; else forcedButton">
+            <ion-text color="danger">
+              <h4>강제 탈퇴 회원입니다.</h4>
+            </ion-text>
+          </ng-container>
+          <ng-template #forcedButton>
+            <ion-button (click)="forcedQuit(user.id)" size="medium" expand="block" fill="solid" color="danger">
+              강제탈퇴
+            </ion-button>
+          </ng-template>
+        </ion-item>
+        
+      </ng-container>
+      
+
+      <ng-container *ngIf="user.profile.golf_score || user.profile.golf_year || user.profile.golf_frequency || user.profile.golf_oversea || user.profile.golf_membership">
+        <ion-list mode="ios">
+          <ion-list-header>
+            <ion-label>골프정보</ion-label>
+          </ion-list-header>
+          <ng-container *ngIf="user.profile.golf_score">
+            <ion-item lines="none" mode="md" class="option-text">
+              <ion-label>평균타수</ion-label>
+              <ion-label class="ion-text-right">{{ user.profile.golf_score | score }}</ion-label>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="user.profile.golf_year">
+            <ion-item lines="none" mode="md" class="option-text">
+              <ion-label>골프경력</ion-label>
+              <ion-label class="ion-text-right">{{ user.profile.golf_year | year }}</ion-label>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="user.profile.golf_frequency">
+            <ion-item lines="none" mode="md" class="option-text">
+              <ion-label>월라운딩 횟수</ion-label>
+              <ion-label class="ion-text-right">{{ user.profile.golf_frequency | frequency }}</ion-label>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="user.profile.golf_oversea">
+            <ion-item lines="none" mode="md" class="option-text">
+              <ion-label>해외골프 횟수</ion-label>
+              <ion-label class="ion-text-right">{{ user.profile.golf_oversea | oversea }}</ion-label>
+            </ion-item>
+          </ng-container>
+          <ng-container *ngIf="user.profile.golf_membership">
+            <ion-item lines="none" mode="md" class="option-text">
+              <ion-label class="ion-text-wrap">보유 회원권</ion-label>
+              <ion-label class="ion-text-right">{{ user.profile.golf_membership | membership }}</ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </ng-container>
+
+      <ng-container *ngIf="user.clubs.length">
+        <ion-list mode="ios">
+          <ion-list-header>
+            <ion-label>자주가는 골프장</ion-label>
+          </ion-list-header>
+          <div class="ion-padding-start ion-padding-end">
+            <ion-chip *ngFor="let item of user.clubs">
+              <ion-label class="ion-text-wrap">{{item.name}}</ion-label>
+            </ion-chip>
+          </div>
+        </ion-list>
+      </ng-container>
+
+      <ng-container *ngIf="user.profile.bio">
+        <ion-list mode="ios">
+          <ion-list-header>
+            <ion-label>내 소개</ion-label>
+          </ion-list-header>
+          <ion-item lines="none" mode="md" class="option-text ion-text-wrap">
+            {{ user.profile.bio }}
+          </ion-item>
+        </ion-list>
+      </ng-container>
+      
+      <ion-fab vertical="top" horizontal="end" slot="fixed" class="fab-pictureLength" (click)="imageView(user.id, 0)">
+        <ion-button color="dark" fill="solid" size="small" mode="ios">
+          <ng-container *ngIf="user.pictures.length">{{ slideIndex }}/{{user.pictures.length}}</ng-container>
+          <ion-icon slot="end" name="camera"></ion-icon>
+        </ion-button>
+      </ion-fab>
+
+    </div>
+
+  </ng-container>
+
+  <ion-fab vertical="top" horizontal="start" slot="fixed" class="fab-close">
+    <ion-button color="dark" fill="solid" size="small" mode="ios" (click)="close()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
+  </ion-fab>
+
+  <div class="global-spinner" *ngIf="!user"><ion-spinner name="dots"></ion-spinner></div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar *ngIf="user">
+    <ion-grid>
+      <ion-row>
+        <ng-container *ngIf="!user.isLike">
+          <ion-col class="ion-text-center" (click)="like(0)">
+            <ion-icon name="thumbs-up-outline" size="large" color="medium" mode="ios"></ion-icon>
+            <ion-label>좋아요</ion-label>
+          </ion-col>
+        </ng-container>
+        <ng-container *ngIf="user.isLike">
+          <ion-col class="ion-text-center" (click)="like(1)">
+            <ion-icon name="thumbs-up" size="large" color="primary" mode="ios"></ion-icon>
+            <ion-label>좋아요</ion-label>
+          </ion-col>
+        </ng-container>
+        <ng-container *ngIf="!user.isFriend">
+          <ion-col class="ion-text-center" (click)="addFriend()">
+            <ion-icon name="person-add-outline" size="large" color="medium" mode="md"></ion-icon>
+            <ion-label>친구추가</ion-label>
+          </ion-col>
+        </ng-container>
+        <ng-container *ngIf="user.isFriend">
+          <ion-col class="ion-text-center">
+            <ion-icon name="person" size="large" color="primary" mode="md"></ion-icon>
+            <ion-label>친구</ion-label>
+          </ion-col>
+        </ng-container>
+        <ion-col class="ion-text-center" (click)="message()">
+          <ion-icon name="chatbubbles" size="large" color="medium" mode="md"></ion-icon>
+          <ion-label>메시지</ion-label>
+        </ion-col>
+        <ion-col class="ion-text-center" (click)="userReport(user, me)">
+          <ion-icon name="megaphone" size="large" color="danger" mode="md"></ion-icon>
+          <ion-label>신고</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,57 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>골프조인</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list mode="ios">
+    <div class="pnl-golfjoin-guide" (click)="showGuide()">
+      <div class="lbl-golfjoin-guide">골프 조인은 어떤 서비스 인가요?</div>
+      <ion-icon src="../../../assets/images/img_characters.svg"></ion-icon>
+    </div>
+    <ng-container *ngFor="let list of lists">
+      <ion-item mode="md" lines="inset" [routerLink]="['/golfjoin/view', list.id]" routerDirection="forward">
+        <ion-avatar slot="start">
+          <ion-img [src]="imgSrc(list.thumbnail_image)" (ionError)="imgError($event)"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <strong>{{list.golf_club_name}}</strong>
+          <p>{{ list.golf_time | date:'M.d(E) H:mm':'+0900':'ko-KR' }}</p>
+        </ion-label>
+        <ion-label class="ion-text-right">
+          <p>{{ list.golf_partner | filters : 'golf_join_partner' }}</p>
+          <div *ngIf="!list.deleted_at; then price; else end"></div>
+          <ng-template #price><p>{{ list.green_fee | number }}</p></ng-template>
+          <ng-template #end><p><ion-badge color="medium" mode="ios">종료</ion-badge></p></ng-template>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
+
+<ion-footer mode="ios" class="ion-no-border">
+  <ion-toolbar class="ion-no-padding">
+    <ion-button class="ion-no-margin" (click)="create()" expand="block" fill="outline" strong>
+      골프 조인 만들기
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

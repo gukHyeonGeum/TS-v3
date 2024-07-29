@@ -1,0 +1,51 @@
+.close-fake {
+	--background: transparent;
+	ion-icon {
+		font-size: 2rem;
+	}
+	ion-button {
+		font-size: 18px;
+	}
+}
+
+.swiper-zoom-container {
+	height: 74vh;
+}
+
+.image-b-icon {
+  font-size: 14px;
+  color: #FFF;
+  text-align: center;
+  ion-icon {
+    font-size: 30px;
+    display: block;
+    margin: 0 auto;
+  }
+  &.btn-camera {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+  }
+  &.btn-more {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+.typical {
+	position: absolute;
+  top: 10px;
+  left: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  font-size: 16px;
+  margin-left: -37px;
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+
+ion-toolbar {
+	--min-height: 68px !important;
+	--border-width: 0 !important;
+}

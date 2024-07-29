@@ -1,0 +1,9 @@
+.label-stacked {
+	font-size: 19px;
+	color: var(--ion-color-primary);
+}
+.item-has-focus {
+	.label-stacked {
+		color: var(--ion-color-primary);
+	}
+}

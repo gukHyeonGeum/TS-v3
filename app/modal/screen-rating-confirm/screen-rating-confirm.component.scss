@@ -1,0 +1,23 @@
+ion-avatar {
+  width: 50px;
+  height: 50px;
+  img, ion-img {
+    border-radius: 40%;
+  }
+}
+
+ion-buttons {
+  width: 100%;
+  ion-button {
+    width: 50%;
+    &:first-child {
+      border-right: 1px solid var(--ion-color-light);
+    }
+  }
+}
+
+.profile {
+  ion-avatar {
+    margin: 0 auto;
+  }
+}

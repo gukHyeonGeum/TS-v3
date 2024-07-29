@@ -1,0 +1,28 @@
+<ion-content>
+  <div class="profile ion-margin-top ion-text-center">
+    <ion-avatar>
+      <img [src]="user.thumb" />
+    </ion-avatar>
+    <h6><strong>{{ user.username }}</strong></h6>
+    <p>{{ user.gender | gender }} | {{ user.geo_location }} | {{ user.dob | age }}</p>
+  </div>
+  <p class="ion-padding-top ion-text-center">
+    {{ user.username }}님과<br />
+    스크린번개를 진행하셨나요?<br />
+    진행여부를 지금 선택하지 않으시면<br />
+    1시간 뒤 번개를 진행한 것으로 판단하여<br />
+    기프트머니가 차감됩니다.
+  </p>
+</ion-content>
+<ion-footer>
+  <ion-toolbar mode="ios">
+    <ion-buttons mode="md" slot="start">
+      <ion-button mode="md" expand="block" fill="click" color="light" (click)="confirm('no')">
+        <ion-label>아니요</ion-label>
+      </ion-button>
+      <ion-button mode="md" expand="block" fill="click" color="light" (click)="confirm('yes')">
+        <ion-label>네 진행했습니다.</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

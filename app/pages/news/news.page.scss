@@ -1,0 +1,30 @@
+ion-avatar {
+  width: 50px;
+  height: 50px;
+  img, ion-img {
+    border-radius: 40%;
+  }
+}
+
+ion-item {
+  --min-height: 80px;
+}
+
+ion-label {
+  p {
+    margin-top: 6px;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+}
+
+ion-badge {
+  margin-top: 28px;
+}
+
+.date {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 12px;
+  color: rgba(var(--ion-color-medium-rgb), 1);
+}

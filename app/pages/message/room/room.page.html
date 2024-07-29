@@ -1,0 +1,124 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+  	<ion-buttons slot="start">
+      <ion-back-button defaultHref="message" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ng-container *ngIf="target">
+      <ion-avatar slot="start">
+        <ion-img [src]="imgSrc(target.thumbnail_image)" (ionError)="loadDefault($event)" (click)="profile(target.id)"></ion-img>
+      </ion-avatar>
+      <ion-title>{{ target.username }}</ion-title>
+    </ng-container>
+    <ng-container *ngIf="target?.id !== 1">
+      <ion-buttons slot="end" (click)="popoverMore($event)">
+        <ion-button>
+          <ion-icon name="menu-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ng-container>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="logScrolling($event)" (click)="blur()">
+
+  <ion-infinite-scroll position="top" threshold="150px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <div class="global-spinner" *ngIf="!chats"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-list mode="ios" [ngStyle]="{'display': 'none'}" [ngClass]="{'block': chatShow, 'hide': !chatShow}">
+      
+      <ng-container *ngFor="let chat of chats; let i = index">
+
+        <div class="item" [ngClass]="{ 'me': chat.user_id==me.id, 'dateGroup': true }">
+          <div class="chat-field">
+            <div class="chat-bubble" [ngClass]="{'right': chat.user_id==me.id, 'left' : chat.user_id!=me.id}">
+              <ng-container *ngIf="chat.body.indexOf('teeshot-photo/messages') > 0; then thenMsg; else elseMsg"></ng-container>
+              <ng-template #thenMsg>
+                <ion-thumbnail>
+                  <img [src]="chat.body" (click)="imageView(chat)" />
+                </ion-thumbnail>
+              </ng-template>
+              <ng-template #elseMsg>
+                <ng-container *ngIf="chat.body.indexOf('giphy.com') >= 0; then giphy; else elseGiphy"></ng-container>
+                <ng-template #giphy>
+                  <ion-thumbnail class="emoji giphy">
+                    <img [src]="chat.body" />
+                  </ion-thumbnail>
+                </ng-template>
+                <ng-template #elseGiphy>
+                  <ng-container *ngIf="chat.body.indexOf('/emoji/') >= 0; then emoji; else text"></ng-container>
+                  <ng-template #emoji>
+                    <ion-thumbnail class="emoji" [ngClass]="{'teetalk': chat.body.indexOf('/teetalk/') >= 0}">
+                      <ng-container *ngIf="chat.body.indexOf('/animation/') >= 0; then animation; else stil"></ng-container>
+                      <ng-template #animation>
+                        <ion-img [src]="chat.body" (click)="refreshAni($event)"></ion-img>
+                      </ng-template>
+                      <ng-template #stil>
+                        <ion-img [src]="chat.body"></ion-img>
+                      </ng-template>
+                    </ion-thumbnail>
+                  </ng-template>
+                  <ng-template #text>
+                    <div class="chat-message" [innerHtml]="chat.body | common: {type: 'nl2br'}"></div>  
+                  </ng-template>
+                </ng-template>
+              </ng-template>
+              <div class="date-field">
+                <div class="date" [ngClass]="{'dateHidden': (chats[(i+1)]?.user_id==chat.user_id) && (chat.created_at | date:'M.d H:mm':'+0900') == (chats[(i+1)]?.created_at | date:'M.d H:mm':'+0900')}">
+                  {{chat.created_at | date:'M.d H:mm':'+0900'}}
+                </div>
+                <ng-container *ngIf="chat.user_id==me.id">
+                  <div class="readCount" *ngIf="!target?.last_read || ((target?.last_read | common: {type: 'timestamp'}) &lt;= (chat.created_at | common: {type: 'timestamp'}))">1</div>
+                </ng-container>
+              </div>
+              <ion-spinner name="lines-small" class="spinner none"></ion-spinner>
+              <ion-icon name="refresh-circle" color="danger" class="refresh none" (click)="refresh(chat, i)"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+    </ng-container>
+    
+  </ion-list>
+
+</ion-content>
+
+<ion-footer mode="ios" class="ion-no-border">
+  <div class="emoji-preview" *ngIf="emojiMessage">
+    <img src="{{emojiMessage}}" />
+    <ion-button mode="md" fill="clear" color="white" (click)="emojiFieldClose()">
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+  </div>
+  <ion-toolbar [ngClass]="{'ios-safe-area': showEmojiPicker}">
+
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="attach()">
+        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-textarea auto-grow="true" spellcheck="true" required="true" rows="1" class="chat-input" [(ngModel)]="message" placeholder="메시지" (ionBlur)="blur()" (ionFocus)="focus()">
+    </ion-textarea>
+
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="switchEmoji()">
+        <ion-icon slot="icon-only" name="happy-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="primary" (click)="addChat('text')" [disabled]="(!message && !emojiMessage) || isDisabled">
+        <ion-icon slot="icon-only" name="send-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+
+  <emoji-picker [(ngModel)]="emojiMessage" class="stiker-wrap" [ngStyle]="{'height': (emojiHeight - 47) + 'px', 'display': 'none'}" [ngClass]="{'emojiOpen': showEmojiPicker}"></emoji-picker>
+
+</ion-footer>

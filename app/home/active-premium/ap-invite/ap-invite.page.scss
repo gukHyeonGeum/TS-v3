@@ -1,0 +1,48 @@
+ion-toolbar {
+  &.sub-header {
+    --min-height: 40px;
+    ion-item {
+      --min-height: 38px;
+      --border-color: var(--ion-color-primary);
+      ion-label {
+        margin: 0;
+      }
+    }
+  }
+}
+
+ion-list {
+  ion-label {
+    &:first-child {
+      max-width: 80px !important;
+    }
+    &:last-child {
+      max-width: 80px !important;
+    }
+  }
+}
+
+ion-item {
+  --min-height: 80px;
+  &.end {
+    --background: rgba(var(--ion-color-medium-rgb), 0.2);
+  }
+}
+
+ion-label {
+  p {
+    margin-top: 6px;
+    color: rgba(var(--ion-color-dark-rgb), 0.7) !important;
+  }
+}
+
+ion-fab {
+	bottom: 20px;
+	right: 20px;
+}
+
+.btn-guide-help {
+  position: absolute;
+  top: 3px;
+  display: inline-block;
+}

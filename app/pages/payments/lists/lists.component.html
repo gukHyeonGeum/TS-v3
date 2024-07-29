@@ -1,0 +1,42 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>구매내역</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh()" pullFactor="0.5" pullMin="60" pullMax="300">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list mode="ios">
+    <ng-container *ngFor="let list of lists">
+      <ion-item lines="full" mode="md" detail (click)="viewModal(list.id)">
+        <ion-label>
+          구매내역 : {{ list.item_name }}
+          <p>구매일: {{ list.created_at | date:'yy.MM.dd HH:mm':'+0900' }}</p>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ng-container *ngIf="lists && !lists.length">
+    <h5 class="ion-text-center">구매내역이 없습니다.</h5>
+  </ng-container>
+
+  <div class="global-spinner" *ngIf="!lists"><ion-spinner name="dots"></ion-spinner></div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

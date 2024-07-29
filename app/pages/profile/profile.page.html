@@ -1,0 +1,112 @@
+<ion-content>
+  <div *ngIf="me" class="profile-wrap">
+
+    <div class="thumb-field">
+      <ion-slides [options]="{ effect: 'flip' }" (ionSlideTransitionEnd)="change()">
+        <ion-slide *ngFor="let pic of me.pictures; let i = index">
+          <img src="{{ imageUrl + '/' + pic.id + '/original/' + pic.image_file_name }}" [ngStyle]="profile_img" (click)="imageView(me.id, i)" />
+          <div class="typical" *ngIf="me.profile.thumbnail_image == imageUrl + '/' + pic.id + '/thumb/' + pic.image_file_name">대표사진</div>
+        </ion-slide>
+      </ion-slides>
+      <div class="img-over"></div>
+    </div>
+    
+    <div class="none-profile-img" (click)="attach()" *ngIf="!me.pictures.length">
+      <div class="guide-info">
+        <div class="guide-field">
+          <p text-center>사진 등록은 필수!</p>
+          <div class="guide-arrow"></div>
+        </div>
+      </div>
+      <img [src]="images" [ngStyle]="profile_img" />
+    </div>
+
+    <ion-list mode="ios" class="user-info">
+      <ion-list-header>
+        <ion-label>{{ me.username }}</ion-label>
+      </ion-list-header>
+      <ion-item lines="none" mode="md" class="option-text">
+        <ion-label>{{ me.profile.phone ? (me.profile.gender | gender) : '-' }} {{ me.profile.dob | age }}, {{ me.profile.geo_location }}</ion-label>
+      </ion-item>
+      <ion-badge color="primary" class="badge-visit">
+        <span class="ion-float-left">방문자</span>
+        <span class="ion-float-right">{{ me.profile.view_count }}명</span>
+      </ion-badge>
+      <ion-badge color="light" class="badge-like">
+        <span class="ion-float-left">좋아요</span>
+        <span class="ion-float-right">{{ me.profile.like_count }}개</span>
+      </ion-badge>
+    </ion-list>
+    <ion-list mode="ios">
+      <ion-list-header>
+        <ion-label>골프정보</ion-label>
+      </ion-list-header>
+      <ion-item lines="none" mode="md" class="option-text">
+        <ion-label>평균타수</ion-label>
+        <ion-label class="ion-text-right">{{ me.profile.golf_score | score }}</ion-label>
+      </ion-item>
+      <ion-item lines="none" mode="md" class="option-text">
+        <ion-label>골프경력</ion-label>
+        <ion-label class="ion-text-right">{{ me.profile.golf_year | year }}</ion-label>
+      </ion-item>
+      <ion-item lines="none" mode="md" class="option-text">
+        <ion-label>월라운딩 횟수</ion-label>
+        <ion-label class="ion-text-right">{{ me.profile.golf_frequency | frequency }}</ion-label>
+      </ion-item>
+      <ion-item lines="none" mode="md" class="option-text">
+        <ion-label>해외골프 횟수</ion-label>
+        <ion-label class="ion-text-right">{{ me.profile.golf_oversea | oversea }}</ion-label>
+      </ion-item>
+      <ion-item lines="none" mode="md" class="option-text">
+        <ion-label class="ion-text-wrap">보유 회원권</ion-label>
+        <ion-label class="ion-text-right">{{ me.profile.golf_membership | membership }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-list mode="ios" *ngIf="me.clubs.length">
+      <ion-list-header>
+        <ion-label>자주가는 골프장</ion-label>
+      </ion-list-header>
+      <div class="ion-padding-start ion-padding-end">
+        <ion-chip *ngFor="let item of me.clubs">
+          <ion-label class="ion-text-wrap">{{item.name}}</ion-label>
+        </ion-chip>
+      </div>
+    </ion-list>
+
+    <ion-list mode="ios" *ngIf="me.profile.bio">
+      <ion-list-header>
+        <ion-label>내 소개</ion-label>
+      </ion-list-header>
+      <ion-item lines="none" mode="md" class="option-text ion-text-wrap">
+        {{ me.profile.bio }}
+      </ion-item>
+    </ion-list>
+    
+    <ion-fab vertical="top" horizontal="end" slot="fixed" class="fab-pictureLength" (click)="imageView(me.id, 0)">
+      <ion-button color="dark" fill="solid" size="small" mode="ios">
+        <ng-container *ngIf="me.pictures.length">{{ slideIndex }}/{{me.pictures.length}}</ng-container>
+        <ion-icon slot="end" name="camera"></ion-icon>
+      </ion-button>
+    </ion-fab>
+  </div>
+
+  <ion-fab vertical="top" horizontal="start" slot="fixed" class="fab-close">
+    <ion-buttons>
+      <ion-back-button defaultHref="home" mode="md"></ion-back-button>
+    </ion-buttons>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed" class="fab-bottom-camera">
+    <ion-fab-button color="primary" (click)="attach()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed" class="fab-bottom-create">
+    <ion-fab-button color="primary" [routerLink]="['/profile-manage']" routerDirection="forward">
+      <ion-icon name="create" mode="md"></ion-icon>
+    </ion-fab-button>   
+  </ion-fab>
+
+</ion-content>
+  

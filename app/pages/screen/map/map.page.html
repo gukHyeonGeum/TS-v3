@@ -1,0 +1,65 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>스크린 번개</ion-title>
+  </ion-toolbar>
+
+  <ion-segment mode="md" [(ngModel)]="segment" (ionChange)="segmentChanged($event)" scrollable="true">
+    <ion-segment-button value=0>
+      <ion-label>
+        내 번개
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value=1>
+      <ion-label>
+        받은 번개
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+</ion-header>
+
+<ion-content>
+
+  <div class="pnl-screen-guide" (click)="showGuide()">
+    <div class="lbl-screen-guide">스크린 번개는 어떤 서비스 인가요?</div>
+    <ion-icon src="../../../assets/images/img_characters.svg"></ion-icon>
+  </div>
+  <div #map id="map"></div>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <div class="btn-box request-me" [ngClass]="{'on': division === 'screenStore'}" (click)="requestDivision('screenStore')">스크린<br />상점</div>
+  </ion-fab>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <div class="btn-box share-me" [ngClass]="{'on': division === 'myList'}" (click)="requestDivision('myList')">내<br />번개</div>
+  </ion-fab>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <div class="btn-box user-distribution" [ngClass]="{'on': division === 'requestList'}" (click)="requestDivision('requestList')">받은<br />번개</div>
+  </ion-fab>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <div class="btn-box location-me" (click)="currentPosition()"><ion-icon name="locate-outline"></ion-icon></div>
+  </ion-fab>
+
+  <!-- <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="white" size="small" (click)="currentPosition()">
+      <ion-icon name="locate-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="btn-screen-create" color="primary" (click)="create()">
+      번개 만들기
+    </ion-fab-button>
+  </ion-fab> -->
+
+</ion-content>
+
+<ion-footer mode="ios" class="ion-no-border">
+  <ion-toolbar class="ion-no-padding">
+    <ion-button class="ion-no-margin" (click)="create()" expand="block" fill="outline" strong>
+      스크린 번개 만들기
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

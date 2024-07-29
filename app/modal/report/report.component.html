@@ -1,0 +1,70 @@
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-title>불량회원 신고하기</ion-title>
+    <ion-buttons slot="end" mode="md">
+      <ion-button (click)="close(false)">
+        <ion-icon slot="icon-only" name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="reportForm" novalidate>
+  <ion-list mode="ios">
+    <ion-radio-group formControlName="reportNum" (ionChange)="change($event)">
+      <ion-item lines="full" mode="md">
+        <ion-label>불쾌감을 주는 언행(욕설, 비방 등)</ion-label>
+        <ion-radio slot="end" value=1></ion-radio>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>가짜 프로필 사진</ion-label>
+        <ion-radio slot="end" value=2></ion-radio>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>허위 가입(성별, 나이 등)</ion-label>
+        <ion-radio slot="end" value=3></ion-radio>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>사생활 침해</ion-label>
+        <ion-radio slot="end" value=4></ion-radio>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>광고, 홍보성 글</ion-label>
+        <ion-radio slot="end" value=5></ion-radio>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>기타</ion-label>
+        <ion-radio slot="end" value=99></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    <ion-item mode="md" *ngIf="etcText">
+      <ion-label position="stacked" mode="md">(추가 입력란)</ion-label>
+      <ion-textarea color="primary" placeholder="입력하세요." formControlName="etcMsg"></ion-textarea>
+    </ion-item>
+    <ion-item lines="none" mode="md">
+      <ion-label position="stacked" style="color: red; margin-top: 20px; margin-bottom: 8px;">신고처리 안내</ion-label>
+      <p style="font-size: 14px;">
+      *신고는 티샷 서비스 이용 중에 문제가 발생한 경우에 가능합니다.<br>
+      *전화통화, 문자, 카톡 같은 다른 서비스 등을 통한 개인적인
+      대화 및 만남, 라운딩에서 발생한 문제는 신고 대상이 아닙니다.<br>
+      *정상 접수된 신고는 확인후 서비스 운영규정에 따라 처리됩니다.<br>
+      *신고처리결과는 개인정보보호를 위하여 처리 대상자에게만
+      통보되고 신고자에게는 알려드리지 않습니다.<br>
+      <br>
+      티샷은 잘 사용하지 않는다면서 카톡 아이디를 알려주고 카톡을 통
+      해서 개별적으로 연락을 요청해 회원들에게 금전적인 피해를 발생
+      시키려는 시도가 있습니다. <span style="color: red;">모르는 상대가 카톡 아이디만 알려주면
+      서 등록 요청하는 경우 즉시 신고</span>해 주시기 바랍니다.
+      </p>
+    </ion-item>
+  </ion-list>
+  </form>
+
+</ion-content>
+<ion-footer mode="ios">
+  <ion-button class="ion-no-margin" expand="full" size="large" color="primary" strong (click)="submit()" [disabled]="!reportForm.valid">
+    신고하기
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,208 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>수정</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light" drag-content="false">
+
+  <ng-container *ngIf="info">
+  
+  <form [formGroup]="premiumForm" novalidate>
+
+    <ion-list mode="ios">
+      <ion-item lines="full" mode="md">
+        <ion-label>
+          <h2 class="ion-padding-bottom">초청종류</h2>
+          <ion-segment mode="ios" (ionChange)="segmentChanged($event)" [value]="whichPage" scrollable>
+            <ion-segment-button value="1" mode="ios">
+              <ion-label>당일라운드</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="2" mode="ios">
+              <ion-label>국내패키지</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="3" mode="ios">
+              <ion-label>해외골프</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-list mode="ios">
+      <ion-item mode="md" lines="none">
+        <ion-label>
+          <p>
+            골프장 등록
+          </p>
+        </ion-label>
+      </ion-item>
+      <ng-container *ngIf="whichPage==1 || whichPage==2">
+        <ion-item lines="inset" mode="md" (click)="searchGolf()">
+          <ion-label>골프장</ion-label>
+          <ion-input type="hidden" formControlName="club_region"></ion-input>
+          <ion-input type="hidden" formControlName="club_name"></ion-input>
+          <ion-input type="text" class="ion-text-right" value="{{form.club_name}}" placeholder="검색하세요" readonly></ion-input>
+        </ion-item>
+      </ng-container>
+      <ng-container *ngIf="whichPage==3">
+        <ion-item lines="inset" mode="md">
+          <ion-label>국가</ion-label>
+          <ion-select interface="action-sheet" formControlName="club_region" cancelText="취소" okText="확인" placeholder="선택하세요" (ionChange)="clubType($event)">
+            <ion-select-option [value]="10">일본</ion-select-option>
+            <ion-select-option [value]="11">중국</ion-select-option>
+            <ion-select-option [value]="12">태국</ion-select-option>
+            <ion-select-option [value]="13">베트남</ion-select-option>
+            <ion-select-option [value]="14">필리핀</ion-select-option>
+            <ion-select-option [value]="15">라오스</ion-select-option>
+            <ion-select-option [value]="16">말레이시아</ion-select-option>
+            <ion-select-option [value]="17">대만</ion-select-option>
+            <ion-select-option [value]="18">미얀마</ion-select-option>
+            <ion-select-option [value]="19">브루나이</ion-select-option>
+            <ion-select-option [value]="20">인도네시아</ion-select-option>
+            <ion-select-option [value]="21">괌</ion-select-option>
+            <ion-select-option [value]="22">사이판</ion-select-option>
+            <ion-select-option [value]="23">하와이</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item lines="inset" mode="md">
+          <ion-label>지역</ion-label>
+          <ion-select interface="action-sheet" formControlName="club_name" cancelText="취소" okText="확인" placeholder="선택하세요" *ngIf="clubLists" value="{{form.club_name}}">
+            <ion-select-option *ngFor="let club of clubLists" [value]="club.id">{{ club.region }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ng-container>
+      <ng-container *ngIf="whichPage==4">
+        <ion-item lines="inset" mode="md">
+          <ion-label>지역</ion-label>
+          <ion-input type="text" formControlName="club_region" placeholder="(예:서울 강남)" class="ion-text-right"></ion-input>
+        </ion-item>
+        <ion-item lines="inset" mode="md">
+          <ion-label>스크린</ion-label>
+          <ion-input type="text" formControlName="club_name" placeholder="(예:삼성스크린)" class="ion-text-right"></ion-input>
+        </ion-item>
+      </ng-container>
+      <ng-container *ngIf="whichPage==1 || whichPage==4">
+        <ion-item lines="inset" mode="md">
+          <ion-label>날짜</ion-label>
+          <ion-datetime formControlName="bookingDate" placeholder="선택하세요" display-format="YYYY-MM-DD" min="{{ nextDay | date:'yyyy-MM-dd':'+0900':'ko-KR' }}" max="{{nowYear.getFullYear()+2}}" cancelText="취소" doneText="확인"></ion-datetime>
+        </ion-item>
+      </ng-container>
+      <ng-container *ngIf="whichPage==2 || whichPage==3">
+        <ion-item lines="none" mode="md" class="option-text">
+          <ion-label>날짜</ion-label>
+        </ion-item>
+        <ion-item lines="inset" mode="md">
+          <ion-datetime formControlName="bookingDate" placeholder="선택하세요" display-format="YYYY-MM-DD" min="{{ nextDay | date:'yyyy-MM-dd':'+0900':'ko-KR' }}" max="{{nowYear.getFullYear()+2}}" cancelText="취소" doneText="확인"></ion-datetime>
+          <ion-label class="date-bar">~</ion-label>
+          <ion-datetime formControlName="nextDate" placeholder="선택하세요" display-format="YYYY-MM-DD" min="{{ nextDay | date:'yyyy-MM-dd':'+0900':'ko-KR' }}" max="{{nowYear.getFullYear()+2}}" cancelText="취소" doneText="확인"></ion-datetime>
+        </ion-item>
+      </ng-container>
+      <ng-container *ngIf="whichPage==1 || whichPage==4">
+        <ion-item lines="inset" mode="md">
+          <ion-label>시간</ion-label>
+          <ion-datetime formControlName="bookingDateTime" placeholder="선택하세요" display-format="HH:mm" cancelText="취소" doneText="확인"></ion-datetime>
+        </ion-item>
+      </ng-container>
+      <ion-item lines="full" mode="md">
+        <ion-label>무료초대 내용</ion-label>
+        <ng-container *ngIf="whichPage==1 || whichPage==2 || whichPage==4">
+          <ion-select interface="action-sheet" formControlName="sponsor" cancelText="취소" okText="확인" placeholder="선택하세요" class="ion-text-wrap">
+            <ng-container *ngIf="whichPage==4">
+              <ion-select-option [value]="1">스크린 9홀</ion-select-option>
+              <ion-select-option [value]="2">스크린 18홀</ion-select-option>
+            </ng-container>
+            <ng-container *ngIf="whichPage==1">
+              <ion-select-option [value]="1">그린피</ion-select-option>
+              <ion-select-option [value]="2">그린피+카트비</ion-select-option>
+              <ion-select-option [value]="3">라운드비용일체(카트,캐디피 포함)</ion-select-option>
+            </ng-container>
+            <ng-container *ngIf="whichPage==2">
+              <ion-select-option [value]="1">패키지</ion-select-option>
+              <ion-select-option [value]="2">패키지비용 일체(카트,캐디피 포함)</ion-select-option>
+              <ion-select-option [value]="3">패키지비용 일체(카트,캐디피 포함)+항공권 포함</ion-select-option>
+            </ng-container>
+          </ion-select>
+        </ng-container>
+        <ng-container *ngIf="whichPage==3">
+          해외골프비용 일체
+        </ng-container>
+        
+      </ion-item>
+    </ion-list>
+
+    <ion-list mode="ios">
+      <ion-item mode="md" lines="none">
+        <ion-label><p>원하는 멤버</p></ion-label>
+      </ion-item>
+      <ion-input type="hidden" formControlName="gender"></ion-input>
+      <ion-item lines="inset" mode="md">
+        <ion-label>
+          <h2 class="ion-padding-bottom">성별</h2>
+          <ion-segment mode="ios" (ionChange)="segmentButtonClicked($event)" [value]="premiumForm.value['gender']" scrollable>
+            <ion-segment-button mode="ios" [value]="1">
+              <ion-label>여성</ion-label>
+            </ion-segment-button>
+            <ion-segment-button mode="ios" [value]="2">
+              <ion-label>남성</ion-label>
+            </ion-segment-button>
+            <ion-segment-button mode="ios" [value]="3">
+              <ion-label>무관</ion-label>
+            </ion-segment-button>
+          </ion-segment> 
+        </ion-label> 
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label>
+          <h2>연령대</h2>
+          <ion-range formControlName="age" class="ion-no-padding" mode="md" id="dual-range" min="30" max="60" step="1" dual-knobs>
+            <ion-label slot="start">{{premiumForm.value['age']['lower']}}세</ion-label>
+            <ion-label slot="end">{{premiumForm.value['age']['upper']}}세</ion-label>
+          </ion-range>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="inset" mode="md">
+        <ion-label>초대인원</ion-label>
+        <ion-select interface="action-sheet" formControlName="partners" cancelText="취소" okText="확인" placeholder="선택하세요">
+          <ion-select-option [value]="1">1명</ion-select-option>
+          <ion-select-option [value]="2">2명</ion-select-option>
+          <ion-select-option [value]="3">3명</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item lines="full" mode="md">
+        <ion-label>무료초대 옵션</ion-label>
+        <ion-select interface="action-sheet" formControlName="option" cancelText="취소" okText="확인" placeholder="선택하세요">
+          <ion-select-option [value]="1">라운드</ion-select-option>
+          <ion-select-option [value]="2">라운드+식사(커피)</ion-select-option>
+          <ion-select-option [value]="3">라운드+소주한잔</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    
+    <ion-list mode="ios">
+      <ion-item mode="md" lines="none">
+        <ion-label><p>추가내용</p></ion-label>
+        <ion-note slot="end">* 광고, 휴대폰번호 입력시 삭제</ion-note>
+      </ion-item>
+      <ion-item mode="md">
+        <ion-textarea rows="5" formControlName="message" placeholder="전하고 싶은 내용을 입력하세요"></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+  </form>
+
+</ng-container>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button mode="md" color="medium" expand="block" (click)="modify()" [disabled]="!premiumForm.valid">
+      수정하기
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

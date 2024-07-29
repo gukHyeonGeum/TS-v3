@@ -1,0 +1,33 @@
+<ion-header mode="ios">
+  <ion-toolbar color="white">
+    <ion-title>고객 문의 작성</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close" mode="md"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <form [formGroup]="bugsForm" novalidate>
+
+    <ion-list mode="ios" class="ion-no-margin">
+      <ion-item lines="none" mode="md">
+        <ion-textarea formControlName="message" rows="5" placeholder="티샷 사용과 관련된 문의나
+사용 중 오류가 있으면 알려주세요"></ion-textarea>
+      </ion-item>
+    </ion-list>
+    <ion-text color="danger">
+      <h6 class="ion-padding-start">* 휴대폰번호 필수입력 (미입력시 상담불가)</h6>
+    </ion-text>
+    <div class="ion-padding">
+      <ion-button color="dark" expand="block" (click)="submit()" [disabled]="!bugsForm.valid">
+        확인
+      </ion-button>
+    </div>
+
+  </form>
+
+</ion-content>

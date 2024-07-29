@@ -1,0 +1,27 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-tabs>
+    <ion-tab-bar slot="top" mode="md">
+      <ion-tab-button tab="invite">
+        <ion-label>초청</ion-label>
+        <ion-badge mode="ios" color="danger" class="badgeCnt">{{ inviteCnt }}</ion-badge>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="request">
+        <ion-label>신청</ion-label>
+        <ion-badge mode="ios" class="badgeCnt">{{ requestCnt }}</ion-badge>
+      </ion-tab-button>
+  
+    </ion-tab-bar>
+  </ion-tabs>
+
+</ion-content>

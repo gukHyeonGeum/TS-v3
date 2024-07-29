@@ -1,0 +1,58 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <div style="padding-left: 12px; display:flex; justify-content: center;" (click)="close()">
+        <ion-icon style="width: 24px; height: 48px;" name="arrow-back"></ion-icon>
+      </div>
+    </ion-buttons>
+    <ion-title>활동 지역 정보</ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content color="white">
+
+  <div class="wrap-guide">
+    <div class="lbl-guide-1">프로필에 다음과 같이 표시됩니다.</div>
+    <div class="lbl-guide-2">남 35세, 서울 강남구</div>
+  </div>
+
+  <div class="pnl-tab">
+    <div class="tab-item left{{!selectedTab ? ' selected' : ''}}" (click)="changeTab(0)">
+      <ion-icon *ngIf="!selectedTab" style="width: 15px; height: 15px; margin-right: 8px;" src="../../../../../../assets/icon/icon_area_check.svg"></ion-icon>
+      내 위치 사용
+    </div>
+    <div class="tab-item right{{selectedTab ? ' selected' : ''}}" (click)="changeTab(1)">
+      <ion-icon *ngIf="selectedTab" style="width: 15px; height: 15px; margin-right: 8px;" src="../../../../../../assets/icon/icon_area_check.svg"></ion-icon>
+      활동지역 선택
+    </div>
+  </div>
+
+  <div class="pnl-location" *ngIf="!selectedTab">
+    내 위치를 사용하시면<br>
+    앱 실행시 위치를 이용하여<br>
+    ‘시군구’ 단위로 정보가 표시됩니다.<br>
+    <br>
+    위치 변동 이력은 저장되지 않습니다.
+  </div>
+
+  <div class="container" *ngIf="selectedTab">
+    <div class="pnl-sido">
+      <ng-container *ngFor="let item of lstDistrict; let i = index">
+        <div class="cll-sido{{item.selected ? ' selected' : ''}}" (click)="selectSido(i)">{{ item.name }}</div>
+      </ng-container>
+    </div>
+    <div class="pnl-sigungu" *ngIf="lstDistrict">
+      <ng-container *ngFor="let item of lstDistrict[selectedSido].list; let i = index">
+        <div class="cll-sigungu{{item.selected ? ' selected' : ''}}" (click)="selectSigungu(i)">{{ item.name }}</div>
+      </ng-container>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer mode="ios" class="ion-no-border">
+  <ion-toolbar class="ion-no-padding">
+    <ion-button (click)="confirm()" expand="block" strong class="ion-no-margin" >
+      확인
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

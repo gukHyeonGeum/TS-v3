@@ -1,0 +1,105 @@
+<ion-header mode="ios">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>마이페이지</ion-title>
+    <ion-buttons slot="end" mode="md">
+      <ion-button [routerLink]="['/profile-manage']" routerDirection="forward">
+        프로필수정
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <ng-container *ngIf="me">
+  
+    <ion-list mode="ios">
+      <ion-item mode="md" lines="none" [routerLink]="['/profile']" routerDirection="forward">
+        <ion-avatar slot="start">
+          <img [src]="me.profile.thumbnail_image | common: {type: 'profileChange'}" (ionError)="imgError($event)" />
+        </ion-avatar>
+        <ion-label class="ion-text-wrap">
+          <h2><strong>{{ me.username }}</strong></h2>
+          <p class="my-email">{{ me.email }}</p>
+        </ion-label>
+        <ion-button color="light" slot="end" fill="solid" mode="ios" class="btn-my btn-light-border">MY</ion-button>
+      </ion-item>
+    </ion-list>
+    <ion-list mode="md">
+      <ion-item lines="none" mode="md" class="membership-wrap">
+        <ion-label><p>구매내용</p></ion-label>
+        <ion-button mode="md" fill="clear" color="medium" size="medium" slot="end" (click)="paymentModal()">구매내역 ></ion-button>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>회원등급</p>
+          {{myInfo.class}} {{myInfo.division}}
+        </ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          <p>이용권 기간</p>
+          <ng-container *ngIf="myInfo.expire">
+            {{myInfo.expire | date:'yy.M.d(E)':'+0900':'ko-KR'}} 까지 
+            <ng-container *ngIf="(myInfo.expire | betweenday: 'day') > 0">
+              ({{myInfo.expire | betweenday: 'day'}}일 남음)
+            </ng-container>
+            <ng-container *ngIf="(myInfo.expire | betweenday: 'day') == 0">
+              (오늘 만료)
+            </ng-container>
+            <ng-container *ngIf="(myInfo.expire | betweenday: 'day') < 0">
+              (만료)
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="!myInfo.expire">-</ng-container>
+        </ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="full">
+        <ion-label class="ion-text-wrap">
+          <p>내 기프트머니</p>
+          {{ me.money | number }} 원
+        </ion-label>
+        <ion-button mode="ios" color="white" [routerLink]="['/giftmoney']" routerDirection="forward" class="btn-light-border ion-margin-top" slot="end" expand="block" fill="solid">
+          교환 신청
+        </ion-button>
+      </ion-item>
+      <ion-item lines="none" mode="md" class="membership-wrap">
+        <ion-label><p>활동내용</p></ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          골프조인
+          <p>
+            <ion-button mode="ios" color="light" [routerLink]="['/active-golfjoin/invite']" routerDirection="forward" class="btn-light-border">초청 {{myInfo.join}}건</ion-button>
+            <ion-button mode="ios" color="white" [routerLink]="['/active-golfjoin/request']" routerDirection="forward" class="btn-light-border ion-margin-start">신청 {{myInfo.joinRsvp}}건</ion-button>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          프리미엄
+          <p>
+            <ion-button mode="ios" color="light" [routerLink]="['/active-premium/invite']" routerDirection="forward" class="btn-light-border">초청 {{myInfo.premium}}건</ion-button>
+            <ion-button mode="ios" color="white" [routerLink]="['/active-premium/request']" routerDirection="forward" class="btn-light-border ion-margin-start">신청 {{myInfo.premiumRsvp}}건</ion-button>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item mode="md" lines="none">
+        <ion-label class="ion-text-wrap">
+          스크린번개
+          <p>
+            <ion-button (click)="navScreen('0')" mode="ios" color="light" class="btn-light-border">초청 {{myInfo.screen}}건</ion-button>
+            <ion-button (click)="navScreen('1')" mode="ios" color="white" class="btn-light-border ion-margin-start">신청 {{myInfo.screenRsvp}}건</ion-button>
+          </p>
+        </ion-label>
+      </ion-item>
+
+    </ion-list>
+
+  </ng-container>
+
+</ion-content>
+  
